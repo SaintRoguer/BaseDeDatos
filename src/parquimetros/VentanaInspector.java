@@ -24,7 +24,6 @@ import javax.swing.WindowConstants;
 import javax.swing.border.BevelBorder;
 
 import quick.dbtable.*;
-import net.miginfocom.swing.MigLayout;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JTable; 
@@ -62,8 +61,8 @@ public class VentanaInspector extends javax.swing.JInternalFrame
       btnSeleccionarUbicacion.setBounds(30, 45, 135, 23);
       panelInspector.add(btnSeleccionarUbicacion);
       
-      JLabel lblPatentesSinIngresar = new JLabel("Patentes sin ingresar");
-      lblPatentesSinIngresar.setBounds(558, 1, 258, 14);
+      JLabel lblPatentesSinIngresar = new JLabel("Patentes seleccionadas");
+      lblPatentesSinIngresar.setBounds(558, 1, 112, 14);
       panelInspector.add(lblPatentesSinIngresar);
       
       JScrollPane scrollPane_1 = new JScrollPane();
@@ -81,8 +80,12 @@ public class VentanaInspector extends javax.swing.JInternalFrame
       scrollPane.setViewportView(list_1);
       
       JLabel lblPatentesEnUbicacion = new JLabel("Patentes en ubicacion");
-      lblPatentesEnUbicacion.setBounds(263, 1, 175, 14);
+      lblPatentesEnUbicacion.setBounds(263, 1, 105, 14);
       panelInspector.add(lblPatentesEnUbicacion);
+      
+      JButton btnLabrarMultas = new JButton("Labrar multas");
+      btnLabrarMultas.setBounds(30, 99, 135, 23);
+      panelInspector.add(btnLabrarMultas);
       
       DBTable tabla = new DBTable();
       tabla.setEditable(false);
