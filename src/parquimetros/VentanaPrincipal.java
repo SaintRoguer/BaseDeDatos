@@ -41,9 +41,7 @@ public class VentanaPrincipal extends javax.swing.JFrame
    private JMenuBar jMenuBar1;
    private JMenuItem mniSalir;
    private JSeparator jSeparator1;
-   private JMenuItem mniBarcos;
    private JMenuItem mniConsultas;
-   private JMenuItem mniAbmBatallas;
    private JMenu mnuEjemplos;
 
    /**
