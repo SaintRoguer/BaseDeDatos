@@ -12,6 +12,7 @@ import java.sql.SQLException;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -33,6 +34,7 @@ public class VentanaConsultas extends javax.swing.JInternalFrame
    private JButton btnEjecutar;
    private DBTable tabla;    
    private JScrollPane scrConsulta;
+   private JButton btnIngresarCredenciales;
 
    
    
@@ -70,6 +72,8 @@ public class VentanaConsultas extends javax.swing.JInternalFrame
                pnlConsulta.add(scrConsulta);
                {
                   txtConsulta = new JTextArea();
+                  txtConsulta.setEnabled(false);
+                  txtConsulta.setEditable(false);
                   scrConsulta.setViewportView(txtConsulta);
                   txtConsulta.setTabSize(3);
                   txtConsulta.setColumns(80);
@@ -80,7 +84,18 @@ public class VentanaConsultas extends javax.swing.JInternalFrame
                }
             }
             {
+            	btnIngresarCredenciales = new JButton("Ingresar Credenciales");
+            	btnIngresarCredenciales.addActionListener(new ActionListener() {
+            		public void actionPerformed(ActionEvent e) {
+            			JFrame IngCred = new IngresarCredenciales();
+            			IngCred.setVisible(true);
+            		}
+            	});
+            	pnlConsulta.add(btnIngresarCredenciales);
+            }
+            {
                btnEjecutar = new JButton();
+               btnEjecutar.setVisible(false);
                pnlConsulta.add(btnEjecutar);
                btnEjecutar.setText("Ejecutar");
                btnEjecutar.addActionListener(new ActionListener() {
@@ -91,6 +106,7 @@ public class VentanaConsultas extends javax.swing.JInternalFrame
             }
             {
             	botonBorrar = new JButton();
+            	botonBorrar.setVisible(false);
             	pnlConsulta.add(botonBorrar);
             	botonBorrar.setText("Borrar");            
             	botonBorrar.addActionListener(new ActionListener() {
