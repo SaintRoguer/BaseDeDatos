@@ -29,12 +29,6 @@ public class VentanaPrincipal extends javax.swing.JFrame
 {
 
    private VentanaConsultas ventanaConsultas;
-   private JButton btnCerrar;
-   private JLabel lblAcercaDe4;
-   private JLabel lblAcercaDe3;
-   private JLabel lblAcercaDe2;
-   private JLabel lblAcercaDe1;
-   private JDialog dlgAcercaDe;
 
    private JDesktopPane jDesktopPane1;
    private JMenuBar jMenuBar1;
@@ -60,6 +54,7 @@ public class VentanaPrincipal extends javax.swing.JFrame
    public VentanaPrincipal() 
    {
       super();
+      setResizable(false);
 
       initGUI();
 
@@ -90,81 +85,6 @@ public class VentanaPrincipal extends javax.swing.JFrame
             jDesktopPane1 = new JDesktopPane();
             getContentPane().add(jDesktopPane1, BorderLayout.CENTER);
             jDesktopPane1.setPreferredSize(new java.awt.Dimension(800, 600));
-         }
-         {
-            dlgAcercaDe = new JDialog(this);
-            GroupLayout dlgAcercaDeLayout = new GroupLayout((JComponent)dlgAcercaDe.getContentPane());
-            dlgAcercaDe.getContentPane().setLayout(dlgAcercaDeLayout);
-            dlgAcercaDe.setTitle("Acerca de...");
-            dlgAcercaDe.setMinimumSize(new java.awt.Dimension(394, 202));
-            dlgAcercaDe.setModalityType(java.awt.Dialog.ModalityType.APPLICATION_MODAL);
-            dlgAcercaDe.setUndecorated(true);
-            {
-               lblAcercaDe1 = new JLabel();
-               lblAcercaDe1.setFont(new java.awt.Font("Dialog", 1, 14));
-               lblAcercaDe1.setText("Ejemplo de conexión a MySQL mediante JDBC");
-               lblAcercaDe1.setHorizontalAlignment(SwingConstants.CENTER);
-            }
-            {
-               btnCerrar = new JButton();
-               btnCerrar.setText("Cerrar");
-               btnCerrar.addActionListener(new ActionListener() {
-                  public void actionPerformed(ActionEvent evt) {
-                     btnCerrarActionPerformed(evt);
-                  }
-               });
-            }
-            {
-               lblAcercaDe2 = new JLabel();
-               lblAcercaDe2.setText("Versión: 0.2");
-               lblAcercaDe2.setHorizontalAlignment(SwingConstants.CENTER);
-            }
-            {
-               lblAcercaDe3 = new JLabel();
-               lblAcercaDe3.setText("<html><center>Bases de Datos<br/>Elementos de Bases de Datos<br/>Teoría y Diseño de Bases de Datos<br/>");
-               lblAcercaDe3.setHorizontalTextPosition(SwingConstants.LEADING);
-               lblAcercaDe3.setHorizontalAlignment(SwingConstants.CENTER);
-            }
-            {
-               lblAcercaDe4 = new JLabel();
-               lblAcercaDe4.setText("<html><center>Dpto. de Ciencias e Ingeniería de la Computación<br/>Universidad Nacional del Sur");
-               lblAcercaDe4.setHorizontalAlignment(SwingConstants.CENTER);
-            }
-            dlgAcercaDeLayout.setHorizontalGroup(dlgAcercaDeLayout.createSequentialGroup()
-               .addContainerGap(62, 62)
-               .addGroup(dlgAcercaDeLayout.createParallelGroup()
-                   .addGroup(dlgAcercaDeLayout.createSequentialGroup()
-                       .addComponent(lblAcercaDe3, GroupLayout.PREFERRED_SIZE, 367, GroupLayout.PREFERRED_SIZE)
-                       .addGap(0, 0, Short.MAX_VALUE))
-                   .addGroup(dlgAcercaDeLayout.createSequentialGroup()
-                       .addComponent(lblAcercaDe4, GroupLayout.PREFERRED_SIZE, 367, GroupLayout.PREFERRED_SIZE)
-                       .addGap(0, 0, Short.MAX_VALUE))
-                   .addGroup(dlgAcercaDeLayout.createSequentialGroup()
-                       .addComponent(lblAcercaDe1, GroupLayout.PREFERRED_SIZE, 367, GroupLayout.PREFERRED_SIZE)
-                       .addGap(0, 0, Short.MAX_VALUE))
-                   .addGroup(dlgAcercaDeLayout.createSequentialGroup()
-                       .addGap(127)
-                       .addGroup(dlgAcercaDeLayout.createParallelGroup()
-                           .addGroup(GroupLayout.Alignment.LEADING, dlgAcercaDeLayout.createSequentialGroup()
-                               .addComponent(btnCerrar, GroupLayout.PREFERRED_SIZE, 104, GroupLayout.PREFERRED_SIZE)
-                               .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED, 0, Short.MAX_VALUE))
-                           .addGroup(dlgAcercaDeLayout.createSequentialGroup()
-                               .addComponent(lblAcercaDe2, GroupLayout.PREFERRED_SIZE, 108, GroupLayout.PREFERRED_SIZE)
-                               .addGap(0, 0, Short.MAX_VALUE)))
-                       .addGap(132)))
-               .addContainerGap(212, 212));
-            dlgAcercaDeLayout.setVerticalGroup(dlgAcercaDeLayout.createSequentialGroup()
-               .addContainerGap()
-               .addComponent(lblAcercaDe1, GroupLayout.PREFERRED_SIZE, 15, GroupLayout.PREFERRED_SIZE)
-               .addGap(22)
-               .addComponent(lblAcercaDe2, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE)
-               .addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
-               .addComponent(lblAcercaDe3, GroupLayout.PREFERRED_SIZE, 58, GroupLayout.PREFERRED_SIZE)
-               .addGap(20)
-               .addComponent(lblAcercaDe4, GroupLayout.PREFERRED_SIZE, 48, GroupLayout.PREFERRED_SIZE)
-               .addGap(24)
-               .addComponent(btnCerrar, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE)
-               .addContainerGap(670, Short.MAX_VALUE));
          }
          {
             jMenuBar1 = new JMenuBar();
@@ -222,11 +142,6 @@ public class VentanaPrincipal extends javax.swing.JFrame
       }
       catch (PropertyVetoException e) {}
       this.ventanaConsultas.setVisible(true);      
-   }
-
-   private void btnCerrarActionPerformed(ActionEvent evt) 
-   {
-      dlgAcercaDe.setVisible(false);
    }
    
    private void centrarDialogo(javax.swing.JDialog p_dialogo)

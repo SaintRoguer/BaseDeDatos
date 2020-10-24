@@ -114,13 +114,13 @@ public class IngresarCredenciales extends javax.swing.JDialog{
             String driver ="com.mysql.cj.jdbc.Driver";
         	String servidor = "localhost:3306";
         	String baseDatos = "parquimetros"; 
-        	String usuario = "admin";
-        	String clave = "admin";
+        	String usuario = textUsuario.getText();
+        	String clave = String.copyValueOf(passwordField.getPassword());
             String uriConexion = "jdbc:mysql://" + servidor + "/" + 
         	                     baseDatos +"?serverTimezone=America/Argentina/Buenos_Aires"; 
             tabla.connectDatabase(driver, uriConexion, usuario, clave);
             
-            JOptionPane.showMessageDialog(null, "Conexion exitosa", "La conexion fue exitosa.", JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showMessageDialog(null, "La conexion fue exitosa.", "Conexion exitosa", JOptionPane.INFORMATION_MESSAGE);
             
 			this.dispose();
 			
