@@ -14,7 +14,6 @@ import java.sql.SQLException;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JDialog;
-import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -37,7 +36,6 @@ public class VentanaConsultas extends javax.swing.JInternalFrame
    private DBTable tabla;    
    private JScrollPane scrConsulta;
    private JButton btnIngresarCredenciales;
-   private Connection conec;
 
    
    
@@ -77,7 +75,6 @@ public class VentanaConsultas extends javax.swing.JInternalFrame
                {
                   txtConsulta = new JTextArea();
                   txtConsulta.setEnabled(false);
-                  txtConsulta.setEditable(false);
                   scrConsulta.setViewportView(txtConsulta);
                   txtConsulta.setTabSize(3);
                   txtConsulta.setColumns(80);
@@ -259,6 +256,8 @@ public class VentanaConsultas extends javax.swing.JInternalFrame
 				btnIngresarCredenciales.setVisible(false);
 				btnEjecutar.setVisible(true);
 				botonBorrar.setVisible(true);
+				txtConsulta.setEnabled(true);
+				txtConsulta.setText("");
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
