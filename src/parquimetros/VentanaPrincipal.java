@@ -20,13 +20,16 @@ public class VentanaPrincipal extends javax.swing.JFrame
 {
 
    private VentanaConsultas ventanaConsultas;
+   private VentanaInspector ventanaInspector;
 
    private JDesktopPane jDesktopPane1;
    private JMenuBar jMenuBar1;
    private JMenuItem mniSalir;
    private JSeparator jSeparator1;
-   private JMenuItem mniConsultas;
+   private JMenuItem mniInspector;
    private JMenu mnuEjemplos;
+   private JSeparator jSeparator1_1;
+   private JMenuItem mniConsultas;
 
    /**
    * Auto-generated main method to display this JFrame
@@ -69,7 +72,7 @@ public class VentanaPrincipal extends javax.swing.JFrame
       
       try {
          {
-            this.setTitle("Java y MySQL");
+            this.setTitle("Proyecto base de datos - Parquimetros");
             this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
          }
          {
@@ -84,12 +87,21 @@ public class VentanaPrincipal extends javax.swing.JFrame
                mnuEjemplos = new JMenu();
                jMenuBar1.add(mnuEjemplos);
                mnuEjemplos.setText("Ejemplos");
+               {
+               	mniConsultas = new JMenuItem();
+               	mniConsultas.setText("Consultas  SQL");
+               	mnuEjemplos.add(mniConsultas);
+               }
+               {
+               	jSeparator1_1 = new JSeparator();
+               	mnuEjemplos.add(jSeparator1_1);
+               }
               
                {
-                  mniConsultas = new JMenuItem();
-                  mnuEjemplos.add(mniConsultas);
-                  mniConsultas.setText("Consultas (Utilizando DBTable)");
-                  mniConsultas.addActionListener(new ActionListener() {
+                  mniInspector = new JMenuItem();
+                  mnuEjemplos.add(mniInspector);
+                  mniInspector.setText("Unidad personal del inspector");
+                  mniInspector.addActionListener(new ActionListener() {
                      public void actionPerformed(ActionEvent evt) {
                         mniConsultasActionPerformed(evt);
                      }
@@ -124,6 +136,15 @@ public class VentanaPrincipal extends javax.swing.JFrame
       this.dispose();
    }
   
+   private void mniInspectorActionPerformed(ActionEvent evt) 
+   {
+      try
+      {
+         this.ventanaInspector.setMaximum(true);
+      }
+      catch (PropertyVetoException e) {}
+      this.ventanaInspector.setVisible(true);      
+   }
    
    private void mniConsultasActionPerformed(ActionEvent evt) 
    {

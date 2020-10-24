@@ -38,42 +38,36 @@ public class VentanaInspector extends javax.swing.JInternalFrame
    public VentanaInspector() 
    {
       super();
-      getContentPane().setLayout(new MigLayout("", "[][][][][][][][][][][][][][][][][][][][][][][grow]", "[grow][][][][][][]"));
+      getContentPane().setLayout(null);
       
-      JButton btnNewButton = new JButton("Ingresear credenciales");
+      JPanel panel = new JPanel();
+      panel.setBounds(0, 0, 784, 570);
+      getContentPane().add(panel);
+      panel.setLayout(null);
+      
+      JButton btnNewButton = new JButton("Ingresar credenciales");
       btnNewButton.addActionListener(new ActionListener() {
       	public void actionPerformed(ActionEvent arg0) {
       	}
       });
-      
-      JButton btnSeleccionarUbicacion = new JButton("Seleccionar Ubicacion");
-      getContentPane().add(btnSeleccionarUbicacion, "cell 0 0");
-      getContentPane().add(btnNewButton, "cell 8 0,aligny top");
-      
-      JScrollPane scrollPane = new JScrollPane();
-      getContentPane().add(scrollPane, "cell 10 0 13 1,grow");
-      
-      JLabel lblPatentesSinCargar = new JLabel("Patentes sin cargar");
-      scrollPane.setColumnHeaderView(lblPatentesSinCargar);
-      
-      JList list = new JList();
-      scrollPane.setViewportView(list);
+      btnNewButton.setBounds(107, 39, 89, 23);
+      panel.add(btnNewButton);
       initGUI();
    }
-   
+ 
    private void initGUI() 
    {
       try {
          setPreferredSize(new Dimension(800, 600));
          this.setBounds(0, 0, 800, 600);
          setVisible(true);
-         this.setTitle("Consultas (Utilizando DBTable)");
+         this.setTitle("Unidad personal del inspector");
          this.setClosable(true);
          this.setDefaultCloseOperation(WindowConstants.HIDE_ON_CLOSE);
          this.setMaximizable(true);
          this.addComponentListener(new ComponentAdapter() {
             public void componentHidden(ComponentEvent evt) {
-               thisComponentHidden(evt);
+               /*thisComponentHidden(evt);*/
             }
             /*
             public void componentShown(ComponentEvent evt) {
@@ -84,13 +78,13 @@ public class VentanaInspector extends javax.swing.JInternalFrame
          e.printStackTrace();
       }
    }
-
+/*
    private void thisComponentHidden(ComponentEvent evt) 
    {
       this.desconectarBD();
    }
-   
- 
+   */
+ /*
 
    private void desconectarBD()
    {
@@ -104,8 +98,8 @@ public class VentanaInspector extends javax.swing.JInternalFrame
             System.out.println("SQLState: " + ex.getSQLState());
             System.out.println("VendorError: " + ex.getErrorCode());
          }      
-   }
-
+   }*/
+/*
    private void refrescarTabla()
    {
       try
@@ -153,7 +147,5 @@ public class VentanaInspector extends javax.swing.JInternalFrame
 
 
       
-   }
-
-   
+   }*/
 }
