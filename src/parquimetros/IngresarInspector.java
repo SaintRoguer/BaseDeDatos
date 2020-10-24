@@ -62,8 +62,8 @@ public class IngresarInspector extends javax.swing.JDialog{
 			this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 			this.getContentPane().setLayout(null);
 			
-			JLabel lblUsuario = new JLabel("Usuario:");
-			lblUsuario.setBounds(57, 33, 40, 14);
+			JLabel lblUsuario = new JLabel("N° Legajo:");
+			lblUsuario.setBounds(46, 33, 51, 14);
 			this.getContentPane().add(lblUsuario);
 			
 			JLabel lblContrasea = new JLabel("Contrase\u00F1a:");
@@ -109,12 +109,19 @@ public class IngresarInspector extends javax.swing.JDialog{
 			String user = textUsuario.getText();
 			char[] pwArray = passwordField.getPassword();
 			String pw = String.copyValueOf(pwArray);
+			String us= "";
+			if(textUsuario.getText()=="Inspector")
+				us="Inspector";
+			else
+				us="NoInspector";
+				
+			
 			
 			try {
 	            String driver ="com.mysql.cj.jdbc.Driver";
 	        	String servidor = "localhost:3306";
 	        	String baseDatos = "parquimetros"; 
-	        	String usuario = "inspector";
+	        	String usuario = us;
 	        	String clave = String.copyValueOf(passwordField.getPassword());
 	            String uriConexion = "jdbc:mysql://" + servidor + "/" + 
 	        	                     baseDatos +"?serverTimezone=America/Argentina/Buenos_Aires"; 
@@ -134,5 +141,4 @@ public class IngresarInspector extends javax.swing.JDialog{
 			
 			
 		}
-
 }
