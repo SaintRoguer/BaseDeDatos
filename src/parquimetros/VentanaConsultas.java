@@ -23,6 +23,8 @@ import javax.swing.JTextArea;
 import javax.swing.SwingUtilities;
 import javax.swing.WindowConstants;
 import javax.swing.border.BevelBorder;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 
 import quick.dbtable.*;
 import javax.swing.JList;
@@ -118,7 +120,12 @@ public class VentanaConsultas extends javax.swing.JInternalFrame
             	botonBorrar.setBounds(584, 45, 63, 23);
             	botonBorrar.setVisible(false);
             	pnlConsulta.add(botonBorrar);
-            	botonBorrar.setText("Borrar");            
+            	botonBorrar.setText("Borrar");  
+            	botonBorrar.addActionListener(new ActionListener() {
+            		public void actionPerformed(ActionEvent arg0) {
+            		  txtConsulta.setText("");            			
+            		}
+            	});
             	
             	
             }
@@ -264,15 +271,15 @@ public class VentanaConsultas extends javax.swing.JInternalFrame
 				arrayTablas[j] = resultados.getString(1);
 			}
 			
-        	botonBorrar.addActionListener(new ActionListener() {
-        		public void actionPerformed(ActionEvent arg0) {
-        		  txtConsulta.setText("");            			
-        		}
-        	});
         	
 
             listTablas = new JList(arrayTablas);
             scrTablas.setViewportView(listTablas);
+            listTablas.addListSelectionListener(new ListSelectionListener() {
+				
+				public void valueChanged(ListSelectionEvent e) {
+				}
+			});
 			
 			
 		} catch (SQLException ex) {
