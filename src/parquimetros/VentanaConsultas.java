@@ -144,8 +144,8 @@ public class VentanaConsultas extends javax.swing.JInternalFrame
             String driver ="com.mysql.cj.jdbc.Driver";
         	String servidor = "localhost:3306";
         	String baseDatos = "parquimetros"; 
-        	String usuario = "admin_batallas";
-        	String clave = "pwadmin";
+        	String usuario = "admin";
+        	String clave = "admin";
             String uriConexion = "jdbc:mysql://" + servidor + "/" + 
         	                     baseDatos +"?serverTimezone=America/Argentina/Buenos_Aires";
    
