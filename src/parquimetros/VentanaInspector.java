@@ -26,7 +26,8 @@ import javax.swing.border.BevelBorder;
 import quick.dbtable.*;
 import net.miginfocom.swing.MigLayout;
 import javax.swing.JLabel;
-import javax.swing.JList; 
+import javax.swing.JList;
+import javax.swing.JTable; 
 
 
 @SuppressWarnings("serial")
@@ -40,18 +41,48 @@ public class VentanaInspector extends javax.swing.JInternalFrame
       super();
       getContentPane().setLayout(null);
       
-      JPanel panel = new JPanel();
-      panel.setBounds(0, 0, 784, 570);
-      getContentPane().add(panel);
-      panel.setLayout(null);
+      JPanel panelInspector = new JPanel();
+      panelInspector.setBounds(0, 0, 784, 362);
+      getContentPane().add(panelInspector);
+      panelInspector.setLayout(null);
       
       JButton btnNewButton = new JButton("Ingresar credenciales");
       btnNewButton.addActionListener(new ActionListener() {
       	public void actionPerformed(ActionEvent arg0) {
       	}
       });
-      btnNewButton.setBounds(107, 39, 89, 23);
-      panel.add(btnNewButton);
+      btnNewButton.setBounds(30, 11, 135, 23);
+      panelInspector.add(btnNewButton);
+      
+      JButton btnSeleccionarUbicacion = new JButton("Seleccionar ubicacion");
+      btnSeleccionarUbicacion.addActionListener(new ActionListener() {
+      	public void actionPerformed(ActionEvent e) {
+      	}
+      });
+      btnSeleccionarUbicacion.setBounds(30, 45, 135, 23);
+      panelInspector.add(btnSeleccionarUbicacion);
+      
+      JLabel lblPatentesSinIngresar = new JLabel("Patentes sin ingresar");
+      lblPatentesSinIngresar.setBounds(558, 1, 258, 14);
+      panelInspector.add(lblPatentesSinIngresar);
+      
+      JScrollPane scrollPane_1 = new JScrollPane();
+      scrollPane_1.setBounds(453, 45, 307, 315);
+      panelInspector.add(scrollPane_1);
+      
+      JList list = new JList();
+      scrollPane_1.setViewportView(list);
+      
+      JScrollPane scrollPane = new JScrollPane();
+      scrollPane.setBounds(194, 46, 258, 313);
+      panelInspector.add(scrollPane);
+      
+      JList list_1 = new JList();
+      scrollPane.setViewportView(list_1);
+      
+      JLabel lblPatentesEnUbicacion = new JLabel("Patentes en ubicacion");
+      lblPatentesEnUbicacion.setBounds(263, 1, 46, 14);
+      panelInspector.add(lblPatentesEnUbicacion);
       initGUI();
    }
  
@@ -78,74 +109,4 @@ public class VentanaInspector extends javax.swing.JInternalFrame
          e.printStackTrace();
       }
    }
-/*
-   private void thisComponentHidden(ComponentEvent evt) 
-   {
-      this.desconectarBD();
-   }
-   */
- /*
-
-   private void desconectarBD()
-   {
-         try
-         {
-            tabla.close();            
-         }
-         catch (SQLException ex)
-         {
-            System.out.println("SQLException: " + ex.getMessage());
-            System.out.println("SQLState: " + ex.getSQLState());
-            System.out.println("VendorError: " + ex.getErrorCode());
-         }      
-   }*/
-/*
-   private void refrescarTabla()
-   {
-      try
-      {    
-    	 // seteamos la consulta a partir de la cual se obtendrán los datos para llenar la tabla
-    	 tabla.setSelectSql(this.txtConsulta.getText().trim());
-
-    	  // obtenemos el modelo de la tabla a partir de la consulta para 
-    	  // modificar la forma en que se muestran de algunas columnas  
-    	  tabla.createColumnModelFromQuery();    	    
-    	  for (int i = 0; i < tabla.getColumnCount(); i++)
-    	  { // para que muestre correctamente los valores de tipo TIME (hora)  		   		  
-    		 if	 (tabla.getColumn(i).getType()==Types.TIME)  
-    		 {    		 
-    		    tabla.getColumn(i).setType(Types.CHAR);  
-  	       	 }
-    		 // cambiar el formato en que se muestran los valores de tipo DATE
-    		 if	 (tabla.getColumn(i).getType()==Types.DATE)
-    		 {
-    		    tabla.getColumn(i).setDateFormat("dd/MM/YYYY");
-    		 }
-          }  
-    	  // actualizamos el contenido de la tabla.   	     	  
-    	  tabla.refresh();
-    	  // No es necesario establecer  una conexión, crear una sentencia y recuperar el 
-    	  // resultado en un resultSet, esto lo hace automáticamente la tabla (DBTable) a 
-    	  // patir de la conexión y la consulta seteadas con connectDatabase() y setSelectSql() respectivamente.
-          
-    	  
-    	  
-       }
-      catch (SQLException ex)
-      {
-         // en caso de error, se muestra la causa en la consola
-         System.out.println("SQLException: " + ex.getMessage());
-         System.out.println("SQLState: " + ex.getSQLState());
-         System.out.println("VendorError: " + ex.getErrorCode());
-         JOptionPane.showMessageDialog(SwingUtilities.getWindowAncestor(this),
-                                       ex.getMessage() + "\n", 
-                                       "Error al ejecutar la consulta.",
-                                       JOptionPane.ERROR_MESSAGE);
-         
-      }
-      
-
-
-      
-   }*/
 }
