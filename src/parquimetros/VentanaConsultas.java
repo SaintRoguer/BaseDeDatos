@@ -7,7 +7,6 @@ import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 
 import java.sql.Types;
-import java.sql.Connection;
 //import java.sql.ResultSet;
 import java.sql.SQLException;
 
@@ -133,12 +132,7 @@ public class VentanaConsultas extends javax.swing.JInternalFrame
          e.printStackTrace();
       }
    }
-/*
-   private void thisComponentShown(ComponentEvent evt) 
-   {
-      this.conectarBD();
-   }
-   */
+   
    private void thisComponentHidden(ComponentEvent evt) 
    {
       this.desconectarBD();
@@ -149,41 +143,6 @@ public class VentanaConsultas extends javax.swing.JInternalFrame
       this.refrescarTabla();      
    }
    
-   /*
-   private void conectarBD()
-   {
-         try
-         {
-            String driver ="com.mysql.cj.jdbc.Driver";
-        	String servidor = "localhost:3306";
-        	String baseDatos = "parquimetros"; 
-        	String usuario = "admin";
-        	String clave = "admin";
-            String uriConexion = "jdbc:mysql://" + servidor + "/" + 
-        	                     baseDatos +"?serverTimezone=America/Argentina/Buenos_Aires";
-   
-       //establece una conexión con la  B.D. "batallas"  usando directamante una tabla DBTable    
-            tabla.connectDatabase(driver, uriConexion, usuario, clave);
-           
-         }
-         catch (SQLException ex)
-         {
-            JOptionPane.showMessageDialog(this,
-                           "Se produjo un error al intentar conectarse a la base de datos.\n" 
-                            + ex.getMessage(),
-                            "Error",
-                            JOptionPane.ERROR_MESSAGE);
-            System.out.println("SQLException: " + ex.getMessage());
-            System.out.println("SQLState: " + ex.getSQLState());
-            System.out.println("VendorError: " + ex.getErrorCode());
-         }
-         catch (ClassNotFoundException e)
-         {
-            e.printStackTrace();
-         }
-      
-   }*/
-
    private void desconectarBD()
    {
          try
