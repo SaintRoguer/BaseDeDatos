@@ -4,7 +4,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
-
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.sql.Types;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -83,14 +84,13 @@ public class VentanaConsultas extends javax.swing.JInternalFrame
                pnlConsulta.add(scrConsulta);
                {
                   txtConsulta = new JTextArea();
+                  txtConsulta.setLineWrap(true);
                   txtConsulta.setEnabled(false);
                   scrConsulta.setViewportView(txtConsulta);
                   txtConsulta.setTabSize(3);
-                  txtConsulta.setColumns(80);
                   txtConsulta.setBorder(BorderFactory.createEtchedBorder(BevelBorder.LOWERED));
                   txtConsulta.setText("Por favor, ingresar el usuario y contrasenia para realizar consultas");
                   txtConsulta.setFont(new java.awt.Font("Monospaced",0,12));
-                  txtConsulta.setRows(10);
                }
             }
             {
@@ -192,7 +192,7 @@ public class VentanaConsultas extends javax.swing.JInternalFrame
    {
       try
       {    
-    	 // seteamos la consulta a partir de la cual se obtendrán los datos para llenar la tabla
+    	 // seteamos la consulta a partir de la cual se obtendran los datos para llenar la tabla
     	 tabla.setSelectSql(this.txtConsulta.getText().trim());
 
     	  // obtenemos el modelo de la tabla a partir de la consulta para 
@@ -271,14 +271,20 @@ public class VentanaConsultas extends javax.swing.JInternalFrame
 				arrayTablas[j] = resultados.getString(1);
 			}
 			
-        	
+
 
             listTablas = new JList(arrayTablas);
             scrTablas.setViewportView(listTablas);
-            listTablas.addListSelectionListener(new ListSelectionListener() {
+            listTablas.addMouseListener(new MouseListener() {
 				
-				public void valueChanged(ListSelectionEvent e) {
+				public void mousePressed(MouseEvent e) {
+					listarColumnas((String) listTablas.getSelectedValue());
 				}
+
+				public void mouseClicked(MouseEvent e) {}
+				public void mouseEntered(MouseEvent e) {}
+				public void mouseExited(MouseEvent e) {}
+				public void mouseReleased(MouseEvent e) {}
 			});
 			
 			
@@ -293,5 +299,39 @@ public class VentanaConsultas extends javax.swing.JInternalFrame
 	                                       JOptionPane.ERROR_MESSAGE);
 		}
 		
+	}
+
+	protected void listarColumnas(String value) {
+		try {
+			
+			PreparedStatement consulta = tabla.getConnection().prepareStatement("describe "+value+";", ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_READ_ONLY);
+			consulta.execute();
+			ResultSet resultados = consulta.getResultSet();
+			int i=0;
+			while(resultados.next())
+				i++;
+			
+			resultados.beforeFirst();
+			String[] arrayColumnas = new String[i];
+			for(int j=0; j<i; j++) {
+				resultados.next();
+				arrayColumnas[j] = resultados.getString(1);
+			}
+			
+			VentanaListaColumnas dialog = new VentanaListaColumnas(arrayColumnas);
+			dialog.setTitle(value);
+			dialog.setVisible(true);
+			
+			
+		} catch (SQLException ex) {
+	         // en caso de error, se muestra la causa en la consola
+	         System.out.println("SQLException: " + ex.getMessage());
+	         System.out.println("SQLState: " + ex.getSQLState());
+	         System.out.println("VendorError: " + ex.getErrorCode());
+	         JOptionPane.showMessageDialog(SwingUtilities.getWindowAncestor(this),
+	                                       ex.getMessage() + "\n", 
+	                                       "Error al ejecutar la consulta.",
+	                                       JOptionPane.ERROR_MESSAGE);
+		}
 	}
 }

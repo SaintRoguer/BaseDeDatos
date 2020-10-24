@@ -91,6 +91,11 @@ public class VentanaPrincipal extends javax.swing.JFrame
                	mniConsultas = new JMenuItem();
                	mniConsultas.setText("Consultas  SQL");
                	mnuEjemplos.add(mniConsultas);
+               	mniConsultas.addActionListener(new ActionListener() {
+                     public void actionPerformed(ActionEvent evt) {
+                        mniConsultasActionPerformed(evt);
+                     }
+                  });
                }
                {
                	jSeparator1_1 = new JSeparator();
@@ -103,7 +108,7 @@ public class VentanaPrincipal extends javax.swing.JFrame
                   mniInspector.setText("Unidad personal del inspector");
                   mniInspector.addActionListener(new ActionListener() {
                      public void actionPerformed(ActionEvent evt) {
-                        mniConsultasActionPerformed(evt);
+                    	 mniInspectorActionPerformed(evt);
                      }
                   });
                }
