@@ -34,7 +34,6 @@ public class VentanaPrincipal extends javax.swing.JFrame
    private JLabel lblAcercaDe3;
    private JLabel lblAcercaDe2;
    private JLabel lblAcercaDe1;
-   private JMenu mnuAcercaDe;
    private JDialog dlgAcercaDe;
 
    private JDesktopPane jDesktopPane1;
@@ -201,16 +200,6 @@ public class VentanaPrincipal extends javax.swing.JFrame
                   });
                }
             }
-            {
-               mnuAcercaDe = new JMenu();
-               jMenuBar1.add(mnuAcercaDe);
-               mnuAcercaDe.setText("Acerca de...");
-               mnuAcercaDe.addMouseListener(new MouseAdapter() {
-                  public void mouseClicked(MouseEvent evt) {
-                     mnuAcercaDeMouseClicked(evt);
-                  }
-               });
-            }
          }
          this.setSize(800, 600);
          pack();
@@ -233,15 +222,6 @@ public class VentanaPrincipal extends javax.swing.JFrame
       }
       catch (PropertyVetoException e) {}
       this.ventanaConsultas.setVisible(true);      
-   }
-   
-  
-   
-   private void mnuAcercaDeMouseClicked(MouseEvent evt) 
-   {
-      dlgAcercaDe.setMinimumSize(new java.awt.Dimension(400, 280));
-      centrarDialogo(dlgAcercaDe);
-      dlgAcercaDe.setVisible(true);
    }
 
    private void btnCerrarActionPerformed(ActionEvent evt) 
