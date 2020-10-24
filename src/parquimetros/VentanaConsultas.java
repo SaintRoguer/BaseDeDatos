@@ -7,11 +7,13 @@ import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 
 import java.sql.Types;
+import java.sql.Connection;
 //import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
+import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -35,6 +37,7 @@ public class VentanaConsultas extends javax.swing.JInternalFrame
    private DBTable tabla;    
    private JScrollPane scrConsulta;
    private JButton btnIngresarCredenciales;
+   private Connection conec;
 
    
    
@@ -60,9 +63,10 @@ public class VentanaConsultas extends javax.swing.JInternalFrame
             public void componentHidden(ComponentEvent evt) {
                thisComponentHidden(evt);
             }
+            /*
             public void componentShown(ComponentEvent evt) {
                thisComponentShown(evt);
-            }
+            }*/
          });
          {
             pnlConsulta = new JPanel();
@@ -87,8 +91,7 @@ public class VentanaConsultas extends javax.swing.JInternalFrame
             	btnIngresarCredenciales = new JButton("Ingresar Credenciales");
             	btnIngresarCredenciales.addActionListener(new ActionListener() {
             		public void actionPerformed(ActionEvent e) {
-            			JFrame IngCred = new IngresarCredenciales();
-            			IngCred.setVisible(true);
+            			ejecutarIngresarCredenciales();
             		}
             	});
             	pnlConsulta.add(btnIngresarCredenciales);
@@ -133,12 +136,12 @@ public class VentanaConsultas extends javax.swing.JInternalFrame
          e.printStackTrace();
       }
    }
-
+/*
    private void thisComponentShown(ComponentEvent evt) 
    {
       this.conectarBD();
    }
-   
+   */
    private void thisComponentHidden(ComponentEvent evt) 
    {
       this.desconectarBD();
@@ -149,6 +152,7 @@ public class VentanaConsultas extends javax.swing.JInternalFrame
       this.refrescarTabla();      
    }
    
+   /*
    private void conectarBD()
    {
          try
@@ -181,7 +185,7 @@ public class VentanaConsultas extends javax.swing.JInternalFrame
             e.printStackTrace();
          }
       
-   }
+   }*/
 
    private void desconectarBD()
    {
@@ -241,7 +245,25 @@ public class VentanaConsultas extends javax.swing.JInternalFrame
          
       }
       
+
+
+      
    }
+   
+
+	private void ejecutarIngresarCredenciales() {
+		JDialog IngCred = new IngresarCredenciales(tabla);
+		IngCred.setVisible(true);
+		try {
+			if(tabla.getConnection().isValid(5)) {
+				btnIngresarCredenciales.setVisible(false);
+				btnEjecutar.setVisible(true);
+				botonBorrar.setVisible(true);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
 
    
 }

@@ -3,18 +3,27 @@ package parquimetros;
 import java.awt.EventQueue;
 
 import javax.swing.JFrame;
+import javax.swing.JInternalFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JTextField;
+
+import quick.dbtable.DBTable;
+
 import javax.swing.JPasswordField;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
 
-public class IngresarCredenciales extends javax.swing.JFrame{
+public class IngresarCredenciales extends javax.swing.JDialog{
 
 	//private JFrame frmIngresarCredenciales;
-	private JTextField textField;
+	private JTextField textUsuario;
 	private JPasswordField passwordField;
+	private DBTable tabla;
 
 	/**
 	 * Launch the application.
@@ -34,9 +43,12 @@ public class IngresarCredenciales extends javax.swing.JFrame{
 
 	/**
 	 * Create the application.
+	 * @param ventanaConsultas 
 	 */
-	public IngresarCredenciales() {
+	public IngresarCredenciales(DBTable tabla) {
+		setModal(true);
 		initialize();
+		this.tabla = tabla;
 	}
 
 	/**
@@ -47,7 +59,7 @@ public class IngresarCredenciales extends javax.swing.JFrame{
 		this.setTitle("Ingresar Credenciales");
 		this.setResizable(false);
 		this.setBounds(100, 100, 356, 206);
-		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		this.getContentPane().setLayout(null);
 		
 		JLabel lblUsuario = new JLabel("Usuario:");
@@ -58,16 +70,21 @@ public class IngresarCredenciales extends javax.swing.JFrame{
 		lblContrasea.setBounds(37, 72, 60, 14);
 		this.getContentPane().add(lblContrasea);
 		
-		textField = new JTextField();
-		textField.setBounds(107, 30, 196, 20);
-		this.getContentPane().add(textField);
-		textField.setColumns(10);
+		textUsuario = new JTextField();
+		textUsuario.setBounds(107, 30, 196, 20);
+		this.getContentPane().add(textUsuario);
+		textUsuario.setColumns(10);
 		
 		passwordField = new JPasswordField();
 		passwordField.setBounds(107, 69, 196, 20);
 		this.getContentPane().add(passwordField);
 		
 		JButton btnAceptar = new JButton("Aceptar");
+		btnAceptar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				conectar();
+			}
+		});
 		btnAceptar.setBounds(194, 118, 89, 32);
 		this.getContentPane().add(btnAceptar);
 		
@@ -84,5 +101,37 @@ public class IngresarCredenciales extends javax.swing.JFrame{
 
 	private void cerrarVentana() {
 		this.dispose();	
+	}
+	
+	
+	private void conectar() {
+		
+		String user = textUsuario.getText();
+		char[] pwArray = passwordField.getPassword();
+		String pw = String.copyValueOf(pwArray);
+		
+		try {
+            String driver ="com.mysql.cj.jdbc.Driver";
+        	String servidor = "localhost:3306";
+        	String baseDatos = "parquimetros"; 
+        	String usuario = "admin";
+        	String clave = "admin";
+            String uriConexion = "jdbc:mysql://" + servidor + "/" + 
+        	                     baseDatos +"?serverTimezone=America/Argentina/Buenos_Aires"; 
+            tabla.connectDatabase(driver, uriConexion, usuario, clave);
+            
+            JOptionPane.showMessageDialog(null, "Conexion exitosa", "La conexion fue exitosa.", JOptionPane.INFORMATION_MESSAGE);
+            
+			this.dispose();
+			
+		} catch (SQLException ex) {
+			System.out.println("SQLException: " + ex.getMessage());
+			System.out.println("SQLState: " + ex.getSQLState());
+			System.out.println("VendorError: " + ex.getErrorCode());
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		}
+		
+		
 	}
 }
