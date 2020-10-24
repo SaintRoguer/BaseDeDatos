@@ -81,8 +81,13 @@ public class VentanaInspector extends javax.swing.JInternalFrame
       scrollPane.setViewportView(list_1);
       
       JLabel lblPatentesEnUbicacion = new JLabel("Patentes en ubicacion");
-      lblPatentesEnUbicacion.setBounds(263, 1, 46, 14);
+      lblPatentesEnUbicacion.setBounds(263, 1, 175, 14);
       panelInspector.add(lblPatentesEnUbicacion);
+      
+      DBTable tabla = new DBTable();
+      tabla.setEditable(false);
+      tabla.setBounds(0, 362, 784, 208);
+      getContentPane().add(tabla);
       initGUI();
    }
  
