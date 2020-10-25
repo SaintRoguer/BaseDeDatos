@@ -48,6 +48,7 @@ public class VentanaInspector extends javax.swing.JInternalFrame
       JButton btnNewButton = new JButton("Ingresar credenciales");
       btnNewButton.addActionListener(new ActionListener() {
       	public void actionPerformed(ActionEvent arg0) {
+      			
       	}
       });
       btnNewButton.setBounds(30, 11, 135, 23);
