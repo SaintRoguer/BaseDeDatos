@@ -7,7 +7,8 @@ import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 
 import java.sql.Types;
-
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 //import java.sql.ResultSet;
 import java.sql.SQLException;
 
@@ -28,6 +29,7 @@ import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
 import javax.swing.JTable; 
 
 
@@ -48,6 +50,9 @@ public class VentanaInspector extends javax.swing.JInternalFrame
     private DBTable tabla;
     private JButton btnIngresarLegajo;
     
+    private JMenuBar menuBar;
+    private JMenu mnSeleccionarUbicacion;
+    private JMenuItem ubi;
     
    public VentanaInspector() 
    {
@@ -117,12 +122,52 @@ public class VentanaInspector extends javax.swing.JInternalFrame
       btnIngresarLegajo.setBounds(42, 71, 109, 23);
       btnIngresarLegajo.setVisible(false);
       panelInspector.add(btnIngresarLegajo);
+     
+      menuBar = new JMenuBar();
+      menuBar.setBounds(30, 207, 97, 21);
+      panelInspector.add(menuBar);
+      
+      mnSeleccionarUbicacion = new JMenu("Seleccionar ubicacion");
+      menuBar.add(mnSeleccionarUbicacion);
+      
+      JMenuItem mntmAsdasd = new JMenuItem("asdasd");
+      mnSeleccionarUbicacion.add(mntmAsdasd);
       
       tabla = new DBTable();
       tabla.setEditable(false);
       tabla.setBounds(0, 362, 784, 208);
       getContentPane().add(tabla);
       initGUI();
+      
+      PreparedStatement consulta;
+		try {
+			consulta = tabla.getConnection().prepareStatement("SELECT calle,altura FROM ubicaciones;", ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_READ_ONLY);
+			consulta.execute();
+			ResultSet resultados = consulta.getResultSet();
+			//Creo un item por cada ubicacion.
+			while(resultados.next()) {
+				String calle = resultados.getString("calle");
+				int altura = resultados.getInt("altura");
+				    
+	            
+	          ubi = new JMenuItem();
+	          mnSeleccionarUbicacion.add(ubi);
+              ubi.setText("calle:"+calle+"altura:"+altura);
+              ubi.addActionListener(new ActionListener() {
+                   public void actionPerformed(ActionEvent evt) {
+                      
+                   }
+                });
+				
+			}
+		
+		
+		
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
    }
  
    private void initGUI() 

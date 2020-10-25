@@ -15,7 +15,9 @@ public class menuUbicacion extends javax.swing.JDialog{
 	
 	private DBTable tabla;
 	
-	private JMenuBar menuBar;
+	private JMenuBar menuBar; 
+	private JMenu mnNewMenu;
+	private JMenuItem ubi;
 	
 	
 	public menuUbicacion(DBTable tabla) {
@@ -23,22 +25,25 @@ public class menuUbicacion extends javax.swing.JDialog{
 		initialize();
 		this.tabla = tabla;
 		
-	}
-	private void initialize() {
-		
 		menuBar = new JMenuBar();
 		setJMenuBar(menuBar);
 		
+		mnNewMenu = new JMenu("New menu");
+		menuBar.add(mnNewMenu);
+		
+	}
+	private void initialize() {
+		/*
 		JMenu mnuUb = new JMenu();
 	    menuBar.add(mnuUb);
 	    mnuUb.setText("Ubicaciones");
-		
+		*/
 		
 
 		
 			PreparedStatement consulta;
 			try {
-				consulta = tabla.getConnection().prepareStatement("SELECT , password FROM Inspectores;", ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_READ_ONLY);
+				consulta = tabla.getConnection().prepareStatement("SELECT calle,altura FROM ubicaciones;", ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_READ_ONLY);
 				consulta.execute();
 				ResultSet resultados = consulta.getResultSet();
 				//Creo un item por cada ubicacion.
@@ -47,8 +52,8 @@ public class menuUbicacion extends javax.swing.JDialog{
 					int altura = resultados.getInt("altura");
 					    
 		            
-		            JMenuItem ubi = new JMenuItem();
-	                mnuUb.add(ubi);
+		            ubi = new JMenuItem();
+	                mnNewMenu.add(ubi);
 	                ubi.setText("calle:"+calle+"altura:"+altura);
 	                ubi.addActionListener(new ActionListener() {
 	                     public void actionPerformed(ActionEvent evt) {
