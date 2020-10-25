@@ -42,9 +42,9 @@ public class VentanaInspector extends javax.swing.JInternalFrame
 	private JButton btnIngresarCredenciales;
     private JLabel lblPatentesSinIngresar;
     private JScrollPane scrollPane_1;
-    private DefaultListModel list;
+    private JList list;
     private JScrollPane scrollPane;
-    private DefaultListModel list_1;
+    private JList list_1;
     private JLabel lblPatentesEnUbicacion;
     private JButton btnLabrarMultas;
     private DBTable tabla;
@@ -82,15 +82,17 @@ public class VentanaInspector extends javax.swing.JInternalFrame
       scrollPane_1.setBounds(453, 45, 307, 315);
       panelInspector.add(scrollPane_1);
       
-      list = new DefaultListModel();
-      
+      DefaultListModel model= new DefaultListModel();
+      list = new JList(model);
+      scrollPane_1.setViewportView(list);
       
       scrollPane = new JScrollPane();
       scrollPane.setBounds(194, 46, 258, 313);
       panelInspector.add(scrollPane);
       
-      list_1 = new DefaultListModel();
-      
+      DefaultListModel model_1= new DefaultListModel();
+      list_1 = new JList(model_1);
+      scrollPane.setViewportView(list_1);
       
       lblPatentesEnUbicacion = new JLabel("Patentes en ubicacion");
       lblPatentesEnUbicacion.setBounds(263, 1, 105, 14);
@@ -216,8 +218,9 @@ public class VentanaInspector extends javax.swing.JInternalFrame
    
    private void menuItemAction(ActionEvent evt, String callie, int alturia) {
 	   //Remueve todos los elentos de la lista.
+	   list.removeAll();
+	   list_1.removeAll();
 	   
-	   /*
 	   PreparedStatement consUbic;
 	   try {
 		consUbic = tabla.getConnection().prepareStatement("SELECT * FROM estacionados;", ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_READ_ONLY);
@@ -231,7 +234,7 @@ public class VentanaInspector extends javax.swing.JInternalFrame
         	if(calleE.equals(callie) && alturaE == alturia) {
         		
         	}
-		
+			
 		}
 		
 		
@@ -241,7 +244,7 @@ public class VentanaInspector extends javax.swing.JInternalFrame
 		e.printStackTrace();
 	}
 	   
-	 */	  
+	   
 	   
    }
 }
