@@ -26,6 +26,8 @@ import javax.swing.border.BevelBorder;
 import quick.dbtable.*;
 import javax.swing.JLabel;
 import javax.swing.JList;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
 import javax.swing.JTable; 
 
 
@@ -44,6 +46,7 @@ public class VentanaInspector extends javax.swing.JInternalFrame
     private JLabel lblPatentesEnUbicacion;
     private JButton btnLabrarMultas;
     private DBTable tabla;
+    private JButton btnIngresarLegajo;
     
     
    public VentanaInspector() 
@@ -70,9 +73,10 @@ public class VentanaInspector extends javax.swing.JInternalFrame
       btnSeleccionarUbicacion.setEnabled(false);
       btnSeleccionarUbicacion.addActionListener(new ActionListener() {
       	public void actionPerformed(ActionEvent e) {
+      		ejecutarSeleccionarUbicacion();
       	}
       });
-      btnSeleccionarUbicacion.setBounds(30, 45, 135, 23);
+      btnSeleccionarUbicacion.setBounds(30, 139, 135, 23);
       panelInspector.add(btnSeleccionarUbicacion);
       
       lblPatentesSinIngresar = new JLabel("Patentes seleccionadas");
@@ -99,8 +103,20 @@ public class VentanaInspector extends javax.swing.JInternalFrame
       
       btnLabrarMultas = new JButton("Labrar multas");
       btnLabrarMultas.setEnabled(false);
-      btnLabrarMultas.setBounds(30, 99, 135, 23);
+      btnLabrarMultas.setBounds(30, 173, 135, 23);
       panelInspector.add(btnLabrarMultas);
+      
+      btnIngresarLegajo = new JButton("Ingresar Legajo");
+      btnIngresarLegajo.addActionListener(new ActionListener() {
+        	public void actionPerformed(ActionEvent arg0) {
+        		ejecutarIngresarLegajo();
+        			
+        	}
+        });
+      
+      btnIngresarLegajo.setBounds(42, 71, 109, 23);
+      btnIngresarLegajo.setVisible(false);
+      panelInspector.add(btnIngresarLegajo);
       
       tabla = new DBTable();
       tabla.setEditable(false);
@@ -140,6 +156,7 @@ public class VentanaInspector extends javax.swing.JInternalFrame
 		try {
 			if(tabla.getConnection().isValid(5)) {
 				btnIngresarCredenciales.setVisible(false);
+				btnIngresarLegajo.setVisible(true);
 				
 			}
 			else
@@ -148,5 +165,22 @@ public class VentanaInspector extends javax.swing.JInternalFrame
 			e.printStackTrace();
 		}
 	}
-
+   private void ejecutarIngresarLegajo() {
+	   JDialog IngLeg = new IngresarLegajo(tabla);
+	   IngLeg.setVisible(true);
+	   if(tabla.isValid()){
+		   btnSeleccionarUbicacion.setEnabled(true);
+				
+	   }
+	   	else
+	   		btnIngresarLegajo.setVisible(true);
+	   
+   }
+   
+   private void ejecutarSeleccionarUbicacion() {
+	   //Borra todas las listas.
+	   list = new JList();
+	   list_1 = new JList();
+	   JDialog menuUbic = new menuUbicacion(tabla);
+   }
 }

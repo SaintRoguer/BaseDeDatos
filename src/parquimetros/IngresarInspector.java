@@ -62,7 +62,7 @@ public class IngresarInspector extends javax.swing.JDialog{
 			this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 			this.getContentPane().setLayout(null);
 			
-			JLabel lblUsuario = new JLabel("N° Legajo:");
+			JLabel lblUsuario = new JLabel("Usuario:");
 			lblUsuario.setBounds(46, 33, 51, 14);
 			this.getContentPane().add(lblUsuario);
 			
