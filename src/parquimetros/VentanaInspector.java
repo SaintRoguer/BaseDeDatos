@@ -5,7 +5,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
-
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.sql.Types;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -89,6 +90,17 @@ public class VentanaInspector extends javax.swing.JInternalFrame
       
       model= new DefaultListModel();
       list = new JList(model);
+      list.addMouseListener(new MouseListener() {
+    	  public void mousePressed(MouseEvent e) {
+    		  	model.removeElement(((String) list_1.getSelectedValue()));
+			}
+
+			public void mouseClicked(MouseEvent e) {}
+			public void mouseEntered(MouseEvent e) {}
+			public void mouseExited(MouseEvent e) {}
+			public void mouseReleased(MouseEvent e) {}
+    	  
+      });
       scrollPane_1.setViewportView(list);
       
       scrollPane = new JScrollPane();
@@ -97,6 +109,18 @@ public class VentanaInspector extends javax.swing.JInternalFrame
       
       model_1= new DefaultListModel();
       list_1 = new JList(model_1);
+      list_1.addMouseListener(new MouseListener() {
+    	  public void mousePressed(MouseEvent e) {
+    		  	if(!model.contains(((String) list_1.getSelectedValue())))
+    		  		model.addElement(((String) list_1.getSelectedValue()));
+			}
+
+			public void mouseClicked(MouseEvent e) {}
+			public void mouseEntered(MouseEvent e) {}
+			public void mouseExited(MouseEvent e) {}
+			public void mouseReleased(MouseEvent e) {}
+    	  
+      });
       scrollPane.setViewportView(list_1);
       
       lblPatentesEnUbicacion = new JLabel("Patentes en ubicacion");
