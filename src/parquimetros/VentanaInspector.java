@@ -32,7 +32,8 @@ import javax.swing.JList;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
-import javax.swing.JTable; 
+import javax.swing.JTable;
+import javax.swing.JTextField; 
 
 
 @SuppressWarnings("serial")
@@ -59,6 +60,7 @@ public class VentanaInspector extends javax.swing.JInternalFrame
     private JMenuBar menuBar;
     private JMenu mnSeleccionarUbicacion;
     private JMenuItem ubi;
+    private JTextField txtIngresarpatentes;
     
    public VentanaInspector() 
    {
@@ -93,6 +95,8 @@ public class VentanaInspector extends javax.swing.JInternalFrame
       list.addMouseListener(new MouseListener() {
     	  public void mousePressed(MouseEvent e) {
     		  	model.removeElement(((String) list_1.getSelectedValue()));
+    		  	if(model.isEmpty())
+    		  		btnLabrarMultas.setEnabled(false);
 			}
 
 			public void mouseClicked(MouseEvent e) {}
@@ -113,6 +117,10 @@ public class VentanaInspector extends javax.swing.JInternalFrame
     	  public void mousePressed(MouseEvent e) {
     		  	if(!model.contains(((String) list_1.getSelectedValue())))
     		  		model.addElement(((String) list_1.getSelectedValue()));
+    		  	
+    		  	if(!model.isEmpty()) {
+    		  		btnLabrarMultas.setEnabled(true);
+    		  	}
 			}
 
 			public void mouseClicked(MouseEvent e) {}
@@ -129,6 +137,12 @@ public class VentanaInspector extends javax.swing.JInternalFrame
       
       btnLabrarMultas = new JButton("Labrar multas");
       btnLabrarMultas.setEnabled(false);
+      btnLabrarMultas.addActionListener(new ActionListener() {
+        	public void actionPerformed(ActionEvent arg0) {
+        		ejecutarLabrarMultas();
+        			
+        	}
+        });
       btnLabrarMultas.setBounds(30, 173, 135, 23);
       panelInspector.add(btnLabrarMultas);
       
@@ -150,6 +164,24 @@ public class VentanaInspector extends javax.swing.JInternalFrame
       
       mnSeleccionarUbicacion = new JMenu("Seleccionar ubicacion");
       menuBar.add(mnSeleccionarUbicacion);
+      
+      txtIngresarpatentes = new JTextField();
+      txtIngresarpatentes.setText("IngresarPatentes");
+      txtIngresarpatentes.setEnabled(false);
+      txtIngresarpatentes.addActionListener(new ActionListener() {
+    	  	public void actionPerformed(ActionEvent arg0) {
+    	  		model.addElement(""+txtIngresarpatentes.getText());
+    	  		txtIngresarpatentes.setText("");
+    	  	}
+    	  
+      });
+      txtIngresarpatentes.setBounds(62, 120, 89, 20);
+      panelInspector.add(txtIngresarpatentes);
+      txtIngresarpatentes.setColumns(10);
+      
+      JLabel lblPatente = new JLabel("Patente:");
+      lblPatente.setBounds(10, 123, 42, 14);
+      panelInspector.add(lblPatente);
       
       tabla = new DBTable();
       tabla.setEditable(false);
@@ -206,7 +238,7 @@ public class VentanaInspector extends javax.swing.JInternalFrame
 	   IngLeg.setVisible(true);
 	   if(tabla.isValid()){
 		   menuBar.setEnabled(true);
-				
+		   txtIngresarpatentes.setEnabled(true);
 	   }
 	   	else
 	   		btnIngresarLegajo.setVisible(true);
@@ -217,18 +249,18 @@ public class VentanaInspector extends javax.swing.JInternalFrame
 
 	      PreparedStatement consulta;
 			try {
-				consulta = tabla.getConnection().prepareStatement("SELECT calle,altura FROM parquimetros;", ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_READ_ONLY);
+				consulta = tabla.getConnection().prepareStatement("SELECT id_parq,calle,altura FROM parquimetros;", ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_READ_ONLY);
 				consulta.execute();
 				ResultSet resultados = consulta.getResultSet();
 				//Creo un item por cada ubicacion.
 				while(resultados.next()) {
 					String calle = resultados.getString("calle");
 					int altura = resultados.getInt("altura");
-					    
+					int parquimetro = resultados.getInt("id_parq");    
 		            
 					ubi = new JMenuItem();
 					mnSeleccionarUbicacion.add(ubi);
-					ubi.setText("calle: "+calle+" altura: "+altura);
+					ubi.setText("N° parquimetro: "+parquimetro+" calle: "+calle+" altura: "+altura);
 					ubi.addActionListener(new ActionListener() {
 	                   public void actionPerformed(ActionEvent evt) {
 	                      menuItemAction(evt,calle,altura);
@@ -275,5 +307,39 @@ public class VentanaInspector extends javax.swing.JInternalFrame
 	   
 	   
 	   
+   }
+   
+   
+   private void ejecutarLabrarMultas() {
+	   PreparedStatement consUbic;
+	   int cantLista = model.getSize();
+	   
+	   for(int i=0;i<cantLista;i++) {
+		   //Decodifico el elemento i de la lista.
+		   String elementoI = (String) model.get(i);
+		   
+	   }
+	   
+	   try {
+		consUbic = tabla.getConnection().prepareStatement("SELECT * FROM estacionados;", ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_READ_ONLY);
+		consUbic.execute();
+		ResultSet resUbic = consUbic.getResultSet();
+		//Recorre los elementos de la consulta.
+		while(resUbic.next()) {
+			String calleE = resUbic.getString("calle");
+			int alturaE = resUbic.getInt("altura");
+			String patenteE = resUbic.getString("patente");
+        	
+        	}
+			
+		
+		
+		
+		
+	   } catch (SQLException e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+		}	
+   
    }
 }
