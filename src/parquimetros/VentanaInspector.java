@@ -95,7 +95,7 @@ public class VentanaInspector extends javax.swing.JInternalFrame
       scrollPane.setBounds(194, 46, 258, 313);
       panelInspector.add(scrollPane);
       
-      DefaultListModel model_1= new DefaultListModel();
+      model_1= new DefaultListModel();
       list_1 = new JList(model_1);
       scrollPane.setViewportView(list_1);
       
@@ -237,7 +237,7 @@ public class VentanaInspector extends javax.swing.JInternalFrame
 			int alturaE = resUbic.getInt("altura");
 			String patenteE = resUbic.getString("patente");
         	if(calleE.equals(callie) && alturaE == alturia) {
-        		model.addElement("calle: "+calleE+" altura: "+alturaE+" patente: "+patenteE);
+        		model_1.addElement("calle: "+calleE+" altura: "+alturaE+" patente: "+patenteE);
         	}
 			
 		}
