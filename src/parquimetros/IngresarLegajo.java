@@ -83,7 +83,7 @@ public class IngresarLegajo extends javax.swing.JDialog {
 	
 
 	private void cerrarVentana() {
-		this.dispose();	
+		this.setVisible(false);	
 	}
 		
 	private void conectar() {
@@ -112,14 +112,16 @@ public class IngresarLegajo extends javax.swing.JDialog {
 			}
 			else {
 				JOptionPane.showMessageDialog(null, "La acreditacion fue exitosa.", "Acreditacion exitosa", JOptionPane.INFORMATION_MESSAGE);
-	            this.dispose();
+				this.setVisible(false);
 			}
 		
 	
 		
 		} catch (SQLException e) {e.printStackTrace();}		
 	}
-			
-			
+		
+	public String getLegajo() {
+		return textUsuario.getText();
+	}
 
 }

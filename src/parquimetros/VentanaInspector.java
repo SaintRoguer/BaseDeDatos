@@ -62,6 +62,8 @@ public class VentanaInspector extends javax.swing.JInternalFrame
     private JMenuItem ubi;
     private JTextField txtIngresarpatentes;
     
+    private String legajo;
+    
    public VentanaInspector() 
    {
       super();
@@ -234,15 +236,17 @@ public class VentanaInspector extends javax.swing.JInternalFrame
 		}
 	}
    private void ejecutarIngresarLegajo() {
-	   JDialog IngLeg = new IngresarLegajo(tabla);
+	   IngresarLegajo IngLeg = new IngresarLegajo(tabla);
 	   IngLeg.setVisible(true);
 	   if(tabla.isValid()){
+		   legajo = IngLeg.getLegajo();
 		   menuBar.setEnabled(true);
 		   txtIngresarpatentes.setEnabled(true);
 		   cargarUbicaciones();
 	   }
 	   	else
 	   		btnIngresarLegajo.setVisible(true);
+	   IngLeg.dispose();
 	   
    }
    
