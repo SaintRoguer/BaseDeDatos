@@ -87,52 +87,37 @@ public class IngresarLegajo extends javax.swing.JDialog {
 	}
 		
 	private void conectar() {
-			int num=-1;
-			String contra="";
-			String user = textUsuario.getText();
-			int leg = Integer.parseInt(user);
-			char[] pwArray = passwordField.getPassword();
-			String pw = String.copyValueOf(pwArray);
+		boolean success = false;
+		String userDB;
+		String pwDB;
+		String userIngresado = textUsuario.getText();
+		char[] pwArray = passwordField.getPassword();
+		String pwIngresado = String.copyValueOf(pwArray);
+		
+		
+		
+		try {
+			PreparedStatement consulta = tabla.getConnection().prepareStatement("SELECT legajo, password FROM Inspectores;", ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_READ_ONLY);
+			consulta.execute();	
+			ResultSet resultados = consulta.getResultSet();
 			
+			while(resultados.next() && !success) {
+				userDB = resultados.getString("legajo");
+            	pwDB = resultados.getString("password");
+            	success = userIngresado.equals(userDB) && pwIngresado.equals(pwDB);
+			}
 			
-			
-			try {
-				PreparedStatement consulta = tabla.getConnection().prepareStatement("SELECT legajo, password FROM Inspectores;", ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_READ_ONLY);
-				consulta.execute();	
-				ResultSet resultados = consulta.getResultSet();
-				while(resultados.next()) {
-					int legajo = resultados.getInt("legajo");
-	            	String pass = resultados.getString("password");
-	            	if(legajo == leg) {
-	            		num=legajo;
-	            		contra=pass;
-	            	}
-					
-				}
-			
-			
-			
-			
-			} catch (SQLException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+			if(!success) {
+				JOptionPane.showMessageDialog(null, "La acreditacion fallo, el N° de legajo o la contrasenia es incorrecta.", "Acreditacion fallida", JOptionPane.INFORMATION_MESSAGE);
+			}
+			else {
+				JOptionPane.showMessageDialog(null, "La acreditacion fue exitosa.", "Acreditacion exitosa", JOptionPane.INFORMATION_MESSAGE);
+	            this.dispose();
 			}
 		
-			
-			
-			
-			//Si encontro el legajo y el password es correcto, infroma que es exitosa la acreditacion y sale.
-			if(num>=0) {
-				if(contra.equals(pw)) {
-					JOptionPane.showMessageDialog(null, "La acreditacion fue exitosa.", "Acreditacion exitosa", JOptionPane.INFORMATION_MESSAGE);
-		            this.dispose();
-				}
-			}
-			//sino muestra un mensaje de error.
-			else
-				JOptionPane.showMessageDialog(null, "La acreditacion fallo, el N° de legajo o la contrasenia es incorrecta.", "Acreditacion fallida", JOptionPane.INFORMATION_MESSAGE);
-			
-				
+	
+		
+		} catch (SQLException e) {e.printStackTrace();}		
 	}
 			
 			
