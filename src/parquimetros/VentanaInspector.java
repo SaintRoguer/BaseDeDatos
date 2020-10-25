@@ -224,7 +224,7 @@ public class VentanaInspector extends javax.swing.JInternalFrame
 			if(tabla.getConnection().isValid(5)) {
 				btnIngresarCredenciales.setVisible(false);
 				btnIngresarLegajo.setVisible(true);
-				cargarUbicaciones();
+				
 				
 			}
 			else
@@ -239,6 +239,7 @@ public class VentanaInspector extends javax.swing.JInternalFrame
 	   if(tabla.isValid()){
 		   menuBar.setEnabled(true);
 		   txtIngresarpatentes.setEnabled(true);
+		   cargarUbicaciones();
 	   }
 	   	else
 	   		btnIngresarLegajo.setVisible(true);
@@ -278,9 +279,9 @@ public class VentanaInspector extends javax.swing.JInternalFrame
    }
    
    private void menuItemAction(ActionEvent evt, String callie, int alturia) {
-	   //Remueve todos los elentos de la lista.
-	   model.clear();
+	   //Remueve todos los elementos de la lista.
 	   model_1.clear();
+	   
 	   
 	   PreparedStatement consUbic;
 	   try {
@@ -293,7 +294,7 @@ public class VentanaInspector extends javax.swing.JInternalFrame
 			int alturaE = resUbic.getInt("altura");
 			String patenteE = resUbic.getString("patente");
         	if(calleE.equals(callie) && alturaE == alturia) {
-        		model_1.addElement("calle: "+calleE+" altura: "+alturaE+" patente: "+patenteE);
+        		model_1.addElement(patenteE);
         	}
 			
 		}
@@ -316,7 +317,7 @@ public class VentanaInspector extends javax.swing.JInternalFrame
 	   
 	   for(int i=0;i<cantLista;i++) {
 		   //Decodifico el elemento i de la lista.
-		   String elementoI = (String) model.get(i);
+		   String patenteI = (String) model.get(i);
 		   
 	   }
 	   
