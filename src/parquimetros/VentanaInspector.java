@@ -41,10 +41,15 @@ public class VentanaInspector extends javax.swing.JInternalFrame
 	private JPanel panelInspector;
 	private JButton btnIngresarCredenciales;
     private JLabel lblPatentesSinIngresar;
+    
     private JScrollPane scrollPane_1;
     private JList list;
+    private DefaultListModel model;
+    
     private JScrollPane scrollPane;
     private JList list_1;
+    private DefaultListModel model_1;
+    
     private JLabel lblPatentesEnUbicacion;
     private JButton btnLabrarMultas;
     private DBTable tabla;
@@ -82,7 +87,7 @@ public class VentanaInspector extends javax.swing.JInternalFrame
       scrollPane_1.setBounds(453, 45, 307, 315);
       panelInspector.add(scrollPane_1);
       
-      DefaultListModel model= new DefaultListModel();
+      model= new DefaultListModel();
       list = new JList(model);
       scrollPane_1.setViewportView(list);
       
@@ -218,8 +223,8 @@ public class VentanaInspector extends javax.swing.JInternalFrame
    
    private void menuItemAction(ActionEvent evt, String callie, int alturia) {
 	   //Remueve todos los elentos de la lista.
-	   list.removeAll();
-	   list_1.removeAll();
+	   model.clear();
+	   model_1.clear();
 	   
 	   PreparedStatement consUbic;
 	   try {
@@ -232,7 +237,7 @@ public class VentanaInspector extends javax.swing.JInternalFrame
 			int alturaE = resUbic.getInt("altura");
 			String patenteE = resUbic.getString("patente");
         	if(calleE.equals(callie) && alturaE == alturia) {
-        		
+        		model.addElement("calle: "+calleE+" altura: "+alturaE+" patente: "+patenteE);
         	}
 			
 		}
