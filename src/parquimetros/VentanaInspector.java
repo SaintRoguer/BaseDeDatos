@@ -142,6 +142,8 @@ public class VentanaInspector extends javax.swing.JInternalFrame
 				btnIngresarCredenciales.setVisible(false);
 				
 			}
+			else
+				btnIngresarCredenciales.setVisible(true);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}

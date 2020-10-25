@@ -111,7 +111,7 @@ public class IngresarInspector extends javax.swing.JDialog{
 			String pw = String.copyValueOf(pwArray);
 			String us= "";
 			//Si el usuario no es inspector, falla el login.
-			if(user == "inspector")
+			if(user.contentEquals("inspector"))
 				us=user;
 			else
 				us="noinspector";
