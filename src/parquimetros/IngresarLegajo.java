@@ -16,6 +16,8 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class IngresarLegajo extends javax.swing.JDialog {
@@ -85,47 +87,40 @@ public class IngresarLegajo extends javax.swing.JDialog {
 	}
 		
 	private void conectar() {
-			
+			int num=-1;
+			String contra="";
 			String user = textUsuario.getText();
 			int leg = Integer.parseInt(user);
 			char[] pwArray = passwordField.getPassword();
-			String pw = String.copyValueOf(passwordField.getPassword());
-			int num=-1;
-		    String contra="";
-			try
-				{
-				  	String driver ="com.mysql.cj.jdbc.Driver";
-				  	String servidor = "localhost:3306";
-		          	String baseDatos = "parquimetros"; 
-		          	String usuario = "inspector";
-		          	String clave = "inspector";
-		          	String uriConexion = "jdbc:mysql://" + servidor + "/" + 
-		        	baseDatos +"?serverTimezone=America/Argentina/Buenos_Aires"; 
-		            tabla.connectDatabase(driver, uriConexion, usuario, clave);
-		            java.sql.Connection cnx;
-		            cnx = java.sql.DriverManager.getConnection(uriConexion, usuario, clave);
-		            // Se crea una sentencia jdbc para realizar la consulta
-		            java.sql.Statement stmt = cnx.createStatement();
-					// Se prepara el string SQL de la consulta
-		            String sql = "SELECT legajo, password FROM Inspectores";
-		            // Se ejecuta la sentencia y se recibe un resultado
-		            java.sql.ResultSet rs = stmt.executeQuery(sql);
-		            // Se recorre el resultado
-		            // Busca si esta el N° legajo en la base de datos
-		            while (rs.next()){
-		            	int legajo = rs.getInt("legajo");
-		            	String pass = rs.getString("password");
-		            	if(legajo == leg) {
-		            		num=legajo;
-		            		contra=pass;
-		            	}
-		            }
-		            
-				rs.close();
-				stmt.close();
+			String pw = String.copyValueOf(pwArray);
+			
+			
+			
+			try {
+				PreparedStatement consulta = tabla.getConnection().prepareStatement("SELECT legajo, password FROM Inspectores;", ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_READ_ONLY);
+				consulta.execute();	
+				ResultSet resultados = consulta.getResultSet();
+				while(resultados.next()) {
+					int legajo = resultados.getInt("legajo");
+	            	String pass = resultados.getString("password");
+	            	if(legajo == leg) {
+	            		num=legajo;
+	            		contra=pass;
+	            	}
+					
 				}
-				catch (java.sql.SQLException ex) {}
-				catch(ClassNotFoundException ex) {}
+			
+			
+			
+			
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		
+			
+			
+			
 			//Si encontro el legajo y el password es correcto, infroma que es exitosa la acreditacion y sale.
 			if(num>=0) {
 				if(contra.equals(pw)) {
@@ -134,7 +129,7 @@ public class IngresarLegajo extends javax.swing.JDialog {
 				}
 			}
 			else
-				JOptionPane.showMessageDialog(null, "La acreditacion fallo, el N° de legajo o la contrasenia es incorrecta.", "Acreditacion exitosa", JOptionPane.INFORMATION_MESSAGE);
+				JOptionPane.showMessageDialog(null, "La acreditacion fallo, el N° de legajo o la contrasenia es incorrecta.", "Acreditacion fallida", JOptionPane.INFORMATION_MESSAGE);
 			
 				
 	}
