@@ -32,29 +32,42 @@ import javax.swing.JTable;
 @SuppressWarnings("serial")
 public class VentanaInspector extends javax.swing.JInternalFrame 
 {
-
-   
-   
+	
+	private JPanel panelInspector;
+	private JButton btnIngresarCredenciales;
+	private JButton btnSeleccionarUbicacion;
+    private JLabel lblPatentesSinIngresar;
+    private JScrollPane scrollPane_1;
+    private JList list;
+    private JScrollPane scrollPane;
+    private JList list_1;
+    private JLabel lblPatentesEnUbicacion;
+    private JButton btnLabrarMultas;
+    private DBTable tabla;
+    
+    
    public VentanaInspector() 
    {
       super();
       getContentPane().setLayout(null);
       
-      JPanel panelInspector = new JPanel();
+      panelInspector = new JPanel();
       panelInspector.setBounds(0, 0, 784, 362);
       getContentPane().add(panelInspector);
       panelInspector.setLayout(null);
       
-      JButton btnNewButton = new JButton("Ingresar credenciales");
-      btnNewButton.addActionListener(new ActionListener() {
+      btnIngresarCredenciales = new JButton("Ingresar credenciales");
+      btnIngresarCredenciales.addActionListener(new ActionListener() {
       	public void actionPerformed(ActionEvent arg0) {
+      		ejecutarIngresarCredenciales();
       			
       	}
       });
-      btnNewButton.setBounds(30, 11, 135, 23);
-      panelInspector.add(btnNewButton);
+      btnIngresarCredenciales.setBounds(30, 11, 135, 23);
+      panelInspector.add(btnIngresarCredenciales);
       
-      JButton btnSeleccionarUbicacion = new JButton("Seleccionar ubicacion");
+      btnSeleccionarUbicacion = new JButton("Seleccionar ubicacion");
+      btnSeleccionarUbicacion.setEnabled(false);
       btnSeleccionarUbicacion.addActionListener(new ActionListener() {
       	public void actionPerformed(ActionEvent e) {
       	}
@@ -62,33 +75,34 @@ public class VentanaInspector extends javax.swing.JInternalFrame
       btnSeleccionarUbicacion.setBounds(30, 45, 135, 23);
       panelInspector.add(btnSeleccionarUbicacion);
       
-      JLabel lblPatentesSinIngresar = new JLabel("Patentes seleccionadas");
+      lblPatentesSinIngresar = new JLabel("Patentes seleccionadas");
       lblPatentesSinIngresar.setBounds(558, 1, 112, 14);
       panelInspector.add(lblPatentesSinIngresar);
       
-      JScrollPane scrollPane_1 = new JScrollPane();
+      scrollPane_1 = new JScrollPane();
       scrollPane_1.setBounds(453, 45, 307, 315);
       panelInspector.add(scrollPane_1);
       
-      JList list = new JList();
+      list = new JList();
       scrollPane_1.setViewportView(list);
       
-      JScrollPane scrollPane = new JScrollPane();
+      scrollPane = new JScrollPane();
       scrollPane.setBounds(194, 46, 258, 313);
       panelInspector.add(scrollPane);
       
-      JList list_1 = new JList();
+      list_1 = new JList();
       scrollPane.setViewportView(list_1);
       
-      JLabel lblPatentesEnUbicacion = new JLabel("Patentes en ubicacion");
+      lblPatentesEnUbicacion = new JLabel("Patentes en ubicacion");
       lblPatentesEnUbicacion.setBounds(263, 1, 105, 14);
       panelInspector.add(lblPatentesEnUbicacion);
       
-      JButton btnLabrarMultas = new JButton("Labrar multas");
+      btnLabrarMultas = new JButton("Labrar multas");
+      btnLabrarMultas.setEnabled(false);
       btnLabrarMultas.setBounds(30, 99, 135, 23);
       panelInspector.add(btnLabrarMultas);
       
-      DBTable tabla = new DBTable();
+      tabla = new DBTable();
       tabla.setEditable(false);
       tabla.setBounds(0, 362, 784, 208);
       getContentPane().add(tabla);
@@ -118,4 +132,19 @@ public class VentanaInspector extends javax.swing.JInternalFrame
          e.printStackTrace();
       }
    }
+   
+   
+   private void ejecutarIngresarCredenciales() {
+		JDialog IngCred = new IngresarInspector(tabla);
+		IngCred.setVisible(true);
+		try {
+			if(tabla.getConnection().isValid(5)) {
+				btnIngresarCredenciales.setVisible(false);
+				
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+
 }

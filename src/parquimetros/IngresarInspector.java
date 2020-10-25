@@ -110,10 +110,11 @@ public class IngresarInspector extends javax.swing.JDialog{
 			char[] pwArray = passwordField.getPassword();
 			String pw = String.copyValueOf(pwArray);
 			String us= "";
-			if(textUsuario.getText()=="Inspector")
-				us="Inspector";
+			//Si el usuario no es inspector, falla el login.
+			if(user == "inspector")
+				us=user;
 			else
-				us="NoInspector";
+				us="noinspector";
 				
 			
 			
@@ -122,7 +123,7 @@ public class IngresarInspector extends javax.swing.JDialog{
 	        	String servidor = "localhost:3306";
 	        	String baseDatos = "parquimetros"; 
 	        	String usuario = us;
-	        	String clave = String.copyValueOf(passwordField.getPassword());
+	        	String clave = pw;
 	            String uriConexion = "jdbc:mysql://" + servidor + "/" + 
 	        	                     baseDatos +"?serverTimezone=America/Argentina/Buenos_Aires"; 
 	            tabla.connectDatabase(driver, uriConexion, usuario, clave);
