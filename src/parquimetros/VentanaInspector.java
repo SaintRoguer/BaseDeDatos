@@ -13,6 +13,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import javax.swing.BorderFactory;
+import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JOptionPane;
@@ -41,9 +42,9 @@ public class VentanaInspector extends javax.swing.JInternalFrame
 	private JButton btnIngresarCredenciales;
     private JLabel lblPatentesSinIngresar;
     private JScrollPane scrollPane_1;
-    private JList list;
+    private DefaultListModel list;
     private JScrollPane scrollPane;
-    private JList list_1;
+    private DefaultListModel list_1;
     private JLabel lblPatentesEnUbicacion;
     private JButton btnLabrarMultas;
     private DBTable tabla;
@@ -81,15 +82,15 @@ public class VentanaInspector extends javax.swing.JInternalFrame
       scrollPane_1.setBounds(453, 45, 307, 315);
       panelInspector.add(scrollPane_1);
       
-      list = new JList();
-      scrollPane_1.setViewportView(list);
+      list = new DefaultListModel();
+      
       
       scrollPane = new JScrollPane();
       scrollPane.setBounds(194, 46, 258, 313);
       panelInspector.add(scrollPane);
       
-      list_1 = new JList();
-      scrollPane.setViewportView(list_1);
+      list_1 = new DefaultListModel();
+      
       
       lblPatentesEnUbicacion = new JLabel("Patentes en ubicacion");
       lblPatentesEnUbicacion.setBounds(263, 1, 105, 14);
@@ -194,12 +195,12 @@ public class VentanaInspector extends javax.swing.JInternalFrame
 					int altura = resultados.getInt("altura");
 					    
 		            
-		          ubi = new JMenuItem();
-		          mnSeleccionarUbicacion.add(ubi);
-	              ubi.setText("calle: "+calle+" altura: "+altura);
-	              ubi.addActionListener(new ActionListener() {
+					ubi = new JMenuItem();
+					mnSeleccionarUbicacion.add(ubi);
+					ubi.setText("calle: "+calle+" altura: "+altura);
+					ubi.addActionListener(new ActionListener() {
 	                   public void actionPerformed(ActionEvent evt) {
-	                      
+	                      menuItemAction(evt,calle,altura);
 	                   }
 	                });
 					
@@ -211,5 +212,36 @@ public class VentanaInspector extends javax.swing.JInternalFrame
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
+   }
+   
+   private void menuItemAction(ActionEvent evt, String callie, int alturia) {
+	   //Remueve todos los elentos de la lista.
+	   
+	   /*
+	   PreparedStatement consUbic;
+	   try {
+		consUbic = tabla.getConnection().prepareStatement("SELECT * FROM estacionados;", ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_READ_ONLY);
+		consUbic.execute();
+		ResultSet resUbic = consUbic.getResultSet();
+		//Recorre los elementos de la consulta.
+		while(resUbic.next()) {
+			String calleE = resUbic.getString("calle");
+			int alturaE = resUbic.getInt("altura");
+			String patenteE = resUbic.getString("patente");
+        	if(calleE.equals(callie) && alturaE == alturia) {
+        		
+        	}
+		
+		}
+		
+		
+		
+	} catch (SQLException e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	}
+	   
+	 */	  
+	   
    }
 }
