@@ -39,7 +39,6 @@ public class VentanaInspector extends javax.swing.JInternalFrame
 	
 	private JPanel panelInspector;
 	private JButton btnIngresarCredenciales;
-	private JButton btnSeleccionarUbicacion;
     private JLabel lblPatentesSinIngresar;
     private JScrollPane scrollPane_1;
     private JList list;
@@ -73,16 +72,6 @@ public class VentanaInspector extends javax.swing.JInternalFrame
       });
       btnIngresarCredenciales.setBounds(30, 11, 135, 23);
       panelInspector.add(btnIngresarCredenciales);
-      
-      btnSeleccionarUbicacion = new JButton("Seleccionar ubicacion");
-      btnSeleccionarUbicacion.setEnabled(false);
-      btnSeleccionarUbicacion.addActionListener(new ActionListener() {
-      	public void actionPerformed(ActionEvent e) {
-      		ejecutarSeleccionarUbicacion();
-      	}
-      });
-      btnSeleccionarUbicacion.setBounds(30, 139, 135, 23);
-      panelInspector.add(btnSeleccionarUbicacion);
       
       lblPatentesSinIngresar = new JLabel("Patentes seleccionadas");
       lblPatentesSinIngresar.setBounds(558, 1, 112, 14);
@@ -139,34 +128,6 @@ public class VentanaInspector extends javax.swing.JInternalFrame
       getContentPane().add(tabla);
       initGUI();
       
-      PreparedStatement consulta;
-		try {
-			consulta = tabla.getConnection().prepareStatement("SELECT calle,altura FROM ubicaciones;", ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_READ_ONLY);
-			consulta.execute();
-			ResultSet resultados = consulta.getResultSet();
-			//Creo un item por cada ubicacion.
-			while(resultados.next()) {
-				String calle = resultados.getString("calle");
-				int altura = resultados.getInt("altura");
-				    
-	            
-	          ubi = new JMenuItem();
-	          mnSeleccionarUbicacion.add(ubi);
-              ubi.setText("calle:"+calle+"altura:"+altura);
-              ubi.addActionListener(new ActionListener() {
-                   public void actionPerformed(ActionEvent evt) {
-                      
-                   }
-                });
-				
-			}
-		
-		
-		
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
 		
    }
  
@@ -202,6 +163,7 @@ public class VentanaInspector extends javax.swing.JInternalFrame
 			if(tabla.getConnection().isValid(5)) {
 				btnIngresarCredenciales.setVisible(false);
 				btnIngresarLegajo.setVisible(true);
+				cargarUbicaciones();
 				
 			}
 			else
@@ -214,7 +176,7 @@ public class VentanaInspector extends javax.swing.JInternalFrame
 	   JDialog IngLeg = new IngresarLegajo(tabla);
 	   IngLeg.setVisible(true);
 	   if(tabla.isValid()){
-		   btnSeleccionarUbicacion.setEnabled(true);
+		   menuBar.setEnabled(true);
 				
 	   }
 	   	else
@@ -222,12 +184,35 @@ public class VentanaInspector extends javax.swing.JInternalFrame
 	   
    }
    
-   private void ejecutarSeleccionarUbicacion() {
-	   //Borra todas las listas.
-	   list = new JList();
-	   list_1 = new JList();
-	   JDialog menuUbic = new menuUbicacion(tabla);
-	   menuUbic.setVisible(true);
-	   
+   private void cargarUbicaciones() {
+
+	      PreparedStatement consulta;
+			try {
+				consulta = tabla.getConnection().prepareStatement("SELECT calle,altura FROM ubicaciones;", ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_READ_ONLY);
+				consulta.execute();
+				ResultSet resultados = consulta.getResultSet();
+				//Creo un item por cada ubicacion.
+				while(resultados.next()) {
+					String calle = resultados.getString("calle");
+					int altura = resultados.getInt("altura");
+					    
+		            
+		          ubi = new JMenuItem();
+		          mnSeleccionarUbicacion.add(ubi);
+	              ubi.setText("calle:"+calle+"altura:"+altura);
+	              ubi.addActionListener(new ActionListener() {
+	                   public void actionPerformed(ActionEvent evt) {
+	                      
+	                   }
+	                });
+					
+				}
+			
+			
+			
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
    }
 }
