@@ -119,9 +119,6 @@ public class VentanaInspector extends javax.swing.JInternalFrame
       mnSeleccionarUbicacion = new JMenu("Seleccionar ubicacion");
       menuBar.add(mnSeleccionarUbicacion);
       
-      JMenuItem mntmAsdasd = new JMenuItem("asdasd");
-      mnSeleccionarUbicacion.add(mntmAsdasd);
-      
       tabla = new DBTable();
       tabla.setEditable(false);
       tabla.setBounds(0, 362, 784, 208);
@@ -188,7 +185,7 @@ public class VentanaInspector extends javax.swing.JInternalFrame
 
 	      PreparedStatement consulta;
 			try {
-				consulta = tabla.getConnection().prepareStatement("SELECT calle,altura FROM ubicaciones;", ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_READ_ONLY);
+				consulta = tabla.getConnection().prepareStatement("SELECT calle,altura FROM parquimetros;", ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_READ_ONLY);
 				consulta.execute();
 				ResultSet resultados = consulta.getResultSet();
 				//Creo un item por cada ubicacion.
@@ -199,7 +196,7 @@ public class VentanaInspector extends javax.swing.JInternalFrame
 		            
 		          ubi = new JMenuItem();
 		          mnSeleccionarUbicacion.add(ubi);
-	              ubi.setText("calle:"+calle+"altura:"+altura);
+	              ubi.setText("calle: "+calle+" altura: "+altura);
 	              ubi.addActionListener(new ActionListener() {
 	                   public void actionPerformed(ActionEvent evt) {
 	                      
