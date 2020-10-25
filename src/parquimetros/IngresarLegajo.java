@@ -128,6 +128,7 @@ public class IngresarLegajo extends javax.swing.JDialog {
 		            this.dispose();
 				}
 			}
+			//sino muestra un mensaje de error.
 			else
 				JOptionPane.showMessageDialog(null, "La acreditacion fallo, el N° de legajo o la contrasenia es incorrecta.", "Acreditacion fallida", JOptionPane.INFORMATION_MESSAGE);
 			

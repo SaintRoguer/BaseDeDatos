@@ -182,5 +182,7 @@ public class VentanaInspector extends javax.swing.JInternalFrame
 	   list = new JList();
 	   list_1 = new JList();
 	   JDialog menuUbic = new menuUbicacion(tabla);
+	   menuUbic.setVisible(true);
+	   
    }
 }
