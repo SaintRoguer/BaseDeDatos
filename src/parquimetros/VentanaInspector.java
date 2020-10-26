@@ -102,8 +102,7 @@ public class VentanaInspector extends javax.swing.JInternalFrame
       list.addMouseListener(new MouseListener() {
     	  public void mousePressed(MouseEvent e) {
     		  	model.removeElement(((String) list_1.getSelectedValue()));
-    		  	if(model.isEmpty())
-    		  		btnLabrarMultas.setEnabled(false);
+    		  	
 			}
 
 			public void mouseClicked(MouseEvent e) {}
