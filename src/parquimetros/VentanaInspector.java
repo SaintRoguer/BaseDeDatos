@@ -382,7 +382,25 @@ public class VentanaInspector extends javax.swing.JInternalFrame
 		   		LocalDateTime hour = LocalDateTime.now();
 		   		DateTimeFormatter hourForm = DateTimeFormatter.ofPattern("HH:mm:ss.SS");
 		   		String formatedHour = hour.format(hourForm);
-
+		   		
+		   		//chequeo si la patenteI esta estacionada.
+		   		boolean stacionado = false;
+		   		try {
+		   			PreparedStatement estacionado = tabla.getConnection().prepareStatement("SELECT patente FROM estacionados;", ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_READ_ONLY);
+		   			estacionado.execute();
+				   	ResultSet resest = estacionado.getResultSet();
+				   	while(resest.next()) {
+						String pat = resest.getString("patente");
+						if(pat.equals(patenteI))
+							stacionado=true;
+				   	}
+				   	
+				} catch (SQLException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+		   		//si no esta estacionado labro la multa, insertando una multa a la base de datos.
+		   		if(!stacionado) {
 		   		
 		   		try {
 		   			consUbic = tabla.getConnection().prepareStatement("INSERT INTO multa(fecha,hora,patente,id_asociado_con)"+
@@ -394,6 +412,7 @@ public class VentanaInspector extends javax.swing.JInternalFrame
 		   		} catch (SQLException e) {
 		   			// TODO Auto-generated catch block
 		   			e.printStackTrace();
+		   		}
 		   		}
 		  
 		   
