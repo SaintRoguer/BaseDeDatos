@@ -49,7 +49,7 @@ public class IngresarLegajo extends javax.swing.JDialog {
 		lblUsuario.setBounds(46, 33, 51, 14);
 		this.getContentPane().add(lblUsuario);
 		
-		JLabel lblContrasea = new JLabel("Contrase\u00F1a:");
+		JLabel lblContrasea = new JLabel("Contrasenia:");
 		lblContrasea.setBounds(37, 72, 60, 14);
 		this.getContentPane().add(lblContrasea);
 		
@@ -108,11 +108,11 @@ public class IngresarLegajo extends javax.swing.JDialog {
 			}
 			
 			if(!success) {
-				JOptionPane.showMessageDialog(null, "La acreditacion fallo, el N° de legajo o la contrasenia es incorrecta.", "Acreditacion fallida", JOptionPane.INFORMATION_MESSAGE);
+				JOptionPane.showMessageDialog(null, "La acreditacion fallo, el Nro de legajo o la contrasenia es incorrecta.", "Acreditacion fallida", JOptionPane.INFORMATION_MESSAGE);
 			}
 			else {
 				JOptionPane.showMessageDialog(null, "La acreditacion fue exitosa.", "Acreditacion exitosa", JOptionPane.INFORMATION_MESSAGE);
-				this.setVisible(false);
+				this.setVisible(false); 
 			}
 		
 	
