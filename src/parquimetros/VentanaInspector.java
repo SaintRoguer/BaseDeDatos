@@ -17,6 +17,7 @@ import javax.swing.BorderFactory;
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import javax.swing.JDialog;
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -34,7 +35,8 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JTable;
 import javax.swing.JTextField; 
-
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 @SuppressWarnings("serial")
 public class VentanaInspector extends javax.swing.JInternalFrame 
@@ -63,6 +65,9 @@ public class VentanaInspector extends javax.swing.JInternalFrame
     private JTextField txtIngresarpatentes;
     
     private String legajo;
+    private int par;
+    private String call;
+    private int alt;
     
    public VentanaInspector() 
    {
@@ -268,7 +273,7 @@ public class VentanaInspector extends javax.swing.JInternalFrame
 					ubi.setText("N° parquimetro: "+parquimetro+" calle: "+calle+" altura: "+altura);
 					ubi.addActionListener(new ActionListener() {
 	                   public void actionPerformed(ActionEvent evt) {
-	                      menuItemAction(evt,calle,altura);
+	                      menuItemAction(evt,calle,altura,parquimetro);
 	                   }
 	                });
 					
@@ -282,11 +287,13 @@ public class VentanaInspector extends javax.swing.JInternalFrame
 			}
    }
    
-   private void menuItemAction(ActionEvent evt, String callie, int alturia) {
+   private void menuItemAction(ActionEvent evt, String callie, int alturia, int parquimetro) {
 	   //Remueve todos los elementos de la lista.
 	   model_1.clear();
 	   
-	   
+	   par=parquimetro;
+	   call=callie;
+	   alt=alturia;
 	   PreparedStatement consUbic;
 	   try {
 		consUbic = tabla.getConnection().prepareStatement("SELECT * FROM estacionados;", ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_READ_ONLY);
@@ -317,11 +324,75 @@ public class VentanaInspector extends javax.swing.JInternalFrame
    
    private void ejecutarLabrarMultas() {
 	   PreparedStatement consUbic;
-	   int cantLista = model.getSize();
+	   PreparedStatement consLab;
+	   PreparedStatement check;
+	   boolean esta = false;
+	   String turn="";
+	   try {
+		   check = tabla.getConnection().prepareStatement("SELECT * FROM asociado_con;", ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_READ_ONLY);
+		   check.execute();
+		   ResultSet rescheck = check.getResultSet();
+		   //chequeo si el inspector esta asociado con la ubicacion.
+		   while(rescheck.next()) {
+				int legaM = rescheck.getInt("legajo");
+				String calleM = rescheck.getString("calle");
+				int alturaM = rescheck.getInt("Altura");
+				String turnoM = rescheck.getString("turno");
+				if(legaM == Integer.parseInt(legajo) && calleM.contentEquals(call) && alturaM==alt) {
+					esta=true;
+					turn = turnoM;
+				}
+			}
+		
+		
+	   } catch (SQLException e1) {
+		   // TODO Auto-generated catch block
+		   e1.printStackTrace();
+	   }
 	   
-	   for(int i=0;i<cantLista;i++) {
-		   //Decodifico el elemento i de la lista.
-		   String patenteI = (String) model.get(i);
+	 //Hora actual
+	   LocalDateTime hor = LocalDateTime.now();
+	   DateTimeFormatter horForm = DateTimeFormatter.ofPattern("HH:mm");
+	   String formatedHor = hor.format(horForm);
+	   //La hora actual es entre las 8 y las 13:59 o entre las 14 y las 20.
+	   boolean turno = (turn.equals("M") && formatedHor.compareTo("08;00")>0 && formatedHor.compareTo("13:59")<0) | (turn.equals("T") && formatedHor.compareTo("14:00")>0 && formatedHor.compareTo("20:00")<0);
+	   
+	   //El inspector no esta asociado con la ubicacion o esta fuera de su turno.
+	   if(!esta|!turno) {
+		   JOptionPane.showMessageDialog(new JFrame(), "El inspector no esta autorizado para labrar multas en esta ubicacion", "Dialog",
+			        JOptionPane.ERROR_MESSAGE);
+		   
+	   }
+	   else {
+		   	int cantLista = model.getSize();
+	     
+		   	for(int i=0;i<cantLista;i++) {
+		   		//Decodifico el elemento i de la lista.
+		   		String patenteI = (String) model.get(i);
+		   		//Fecha actual.
+		   		LocalDateTime date = LocalDateTime.now();
+		   		DateTimeFormatter dateForm = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+		   		String formatedDate = date.format(dateForm);
+		   
+		   
+		   		//Hora actual
+		   		LocalDateTime hour = LocalDateTime.now();
+		   		DateTimeFormatter hourForm = DateTimeFormatter.ofPattern("HH:mm:ss.SS");
+		   		String formatedHour = hour.format(hourForm);
+
+		   		
+		   		try {
+		   			consUbic = tabla.getConnection().prepareStatement("INSERT INTO multa(fecha,hora,patente,id_asociado_con)"+
+		   																"VALUES", ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_READ_ONLY);
+		   			consUbic.execute();	
+		   
+		   		} catch (SQLException e) {
+		   			// TODO Auto-generated catch block
+		   			e.printStackTrace();
+		   		}
+		  
+		   
+		   
 		   
 	   }
 	   
