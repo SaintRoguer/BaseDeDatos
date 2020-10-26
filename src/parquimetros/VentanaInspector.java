@@ -102,6 +102,8 @@ public class VentanaInspector extends javax.swing.JInternalFrame
       list.addMouseListener(new MouseListener() {
     	  public void mousePressed(MouseEvent e) {
     		  	model.removeElement(((String) list_1.getSelectedValue()));
+    		  	if(model.isEmpty())
+    		  		btnLabrarMultas.setEnabled(false);
     		  	
 			}
 
@@ -161,8 +163,11 @@ public class VentanaInspector extends javax.swing.JInternalFrame
       txtIngresarpatentes.setEnabled(false);
       txtIngresarpatentes.addActionListener(new ActionListener() {
     	  	public void actionPerformed(ActionEvent arg0) {
-    	  		model.addElement(""+txtIngresarpatentes.getText());
+    	  		if(txtIngresarpatentes.getText().length()==6) 
+    	  			model.addElement(""+txtIngresarpatentes.getText());
     	  		txtIngresarpatentes.setText("");
+    	  		if(!model.isEmpty())
+    	  			btnLabrarMultas.setEnabled(true);
     	  	}
     	  
       });
