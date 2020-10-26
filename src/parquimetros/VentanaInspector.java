@@ -277,8 +277,10 @@ public class VentanaInspector extends javax.swing.JInternalFrame
    }
    
    private void menuItemAction(ActionEvent evt, String callie, int alturia, int parquimetro) {
-	   //Remueve todos los elementos de la lista.
+	   //Remueve todos los elementos de la lista que muestra las patentes estacionadas.
 	   model_1.clear();
+	   //Remueve las patentes cargadas al cambiar de ubicacion
+	   model.clear();
 	   
 	   par=parquimetro;
 	   call=callie;
