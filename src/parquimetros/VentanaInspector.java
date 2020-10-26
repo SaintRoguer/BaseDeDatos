@@ -328,6 +328,7 @@ public class VentanaInspector extends javax.swing.JInternalFrame
 	   PreparedStatement check;
 	   boolean esta = false;
 	   String turn="";
+	   int id_as = -1;
 	   try {
 		   check = tabla.getConnection().prepareStatement("SELECT * FROM asociado_con;", ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_READ_ONLY);
 		   check.execute();
@@ -338,9 +339,11 @@ public class VentanaInspector extends javax.swing.JInternalFrame
 				String calleM = rescheck.getString("calle");
 				int alturaM = rescheck.getInt("Altura");
 				String turnoM = rescheck.getString("turno");
+				int id_asM = rescheck.getInt("id_asoicado_con");
 				if(legaM == Integer.parseInt(legajo) && calleM.contentEquals(call) && alturaM==alt) {
 					esta=true;
 					turn = turnoM;
+					id_as = id_asM;
 				}
 			}
 		
@@ -383,7 +386,9 @@ public class VentanaInspector extends javax.swing.JInternalFrame
 		   		
 		   		try {
 		   			consUbic = tabla.getConnection().prepareStatement("INSERT INTO multa(fecha,hora,patente,id_asociado_con)"+
-		   																"VALUES", ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_READ_ONLY);
+		   																"VALUES ('"+ formatedDate +"','" + formatedHour + "','" +
+		   																patenteI +"','" + id_as + "')"
+		   																, ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_READ_ONLY);
 		   			consUbic.execute();	
 		   
 		   		} catch (SQLException e) {
@@ -394,28 +399,10 @@ public class VentanaInspector extends javax.swing.JInternalFrame
 		   
 		   
 		   
+		   	}
 	   }
 	   
-	   try {
-		consUbic = tabla.getConnection().prepareStatement("SELECT * FROM estacionados;", ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_READ_ONLY);
-		consUbic.execute();
-		ResultSet resUbic = consUbic.getResultSet();
-		//Recorre los elementos de la consulta.
-		while(resUbic.next()) {
-			String calleE = resUbic.getString("calle");
-			int alturaE = resUbic.getInt("altura");
-			String patenteE = resUbic.getString("patente");
-        	
-        	}
-			
-		
-		
-		
-		
-	   } catch (SQLException e) {
-		// TODO Auto-generated catch block
-		e.printStackTrace();
-		}	
+	 
    
    }
 }
