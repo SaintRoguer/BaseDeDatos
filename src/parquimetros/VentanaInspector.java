@@ -155,6 +155,7 @@ public class VentanaInspector extends javax.swing.JInternalFrame
      
       menuBar = new JMenuBar();
       menuBar.setBounds(30, 207, 97, 21);
+      menuBar.setEnabled(false);
       panelInspector.add(menuBar);
       
       mnSeleccionarUbicacion = new JMenu("Seleccionar ubicacion");
