@@ -234,6 +234,8 @@ public class VentanaInspector extends javax.swing.JInternalFrame
 						+ " fecha DATE NOT NULL, hora TIME(2) NOT NULL, calle VARCHAR(45) NOT NULL, altura INT UNSIGNED NOT NULL, patente_del_auto VARCHAR(6) NOT NULL,"
 						+ " legajo_del_inspector INT UNSIGNED NOT NULL);", ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_READ_ONLY);
 				tablaTemp.execute();
+				//Se conecta la dbTable a la tabla temporal.
+				tabla.setSelectSql("select * from MULTILLAS");
 				
 			}
 			else
@@ -327,9 +329,12 @@ public class VentanaInspector extends javax.swing.JInternalFrame
    
    
    private void ejecutarLabrarMultas() {
+	   PreparedStatement multas;
 	   PreparedStatement consUbic;
+	   PreparedStatement insert;
 	   PreparedStatement consLab;
 	   PreparedStatement check;
+	   int nMulta=-1;
 	   boolean esta = false;
 	   String turn="";
 	   int id_as = -1;
@@ -412,7 +417,37 @@ public class VentanaInspector extends javax.swing.JInternalFrame
 		   																patenteI +"','" + id_as + "')"
 		   																, ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_READ_ONLY);
 		   			consUbic.execute();	
-		   
+		   			
+		   			//Recupero el numero de multa luego de la insercion de dicha multa.
+		   			multas = tabla.getConnection().prepareStatement("SELECT * FROM multa);", ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_READ_ONLY);
+		   			multas.execute();
+				   	ResultSet resmul = multas.getResultSet();
+				   	while(resmul.next()) {
+				   		int numMul = resmul.getInt("numero");
+				   		String feMul = resmul.getString("fecha");
+				   		String hoMul = resmul.getString("hora");
+				   		String pat = resmul.getString("patente");
+				   		int idMul = resmul.getInt("id_asociado_con");
+				   		if((feMul.equals(formatedDate)) && (hoMul.equals(formatedHour)) && (pat.equals(patenteI)) && (idMul == id_as)){
+				   			nMulta = numMul;
+				   		}
+				   				
+						
+				   	}
+		   			
+		   			
+		   			
+		   			
+		   			//Inserto en la tabla temporal de multas las multa que labro
+		   			insert = tabla.getConnection().prepareStatement("INSERT INTO MULTILLAS(numero_de_multa,fecha,hora,calle,patente_del_auto,legajo_del_inspector)"+
+								"VALUES ('"+ nMulta + "','" +
+								formatedDate +"','" + formatedHour + "','" +
+								call + "','" + alt + "','" +
+								patenteI +"','" + legajo + "')"
+								, ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_READ_ONLY);
+		   			insert.execute();	
+		   			
+		   			
 		   		} catch (SQLException e) {
 		   			// TODO Auto-generated catch block
 		   			e.printStackTrace();
