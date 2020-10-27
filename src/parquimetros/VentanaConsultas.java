@@ -67,10 +67,6 @@ public class VentanaConsultas extends javax.swing.JInternalFrame
             public void componentHidden(ComponentEvent evt) {
                thisComponentHidden(evt);
             }
-            /*
-            public void componentShown(ComponentEvent evt) {
-               thisComponentShown(evt);
-            }*/
          });
          getContentPane().setLayout(null);
          {
@@ -167,6 +163,11 @@ public class VentanaConsultas extends javax.swing.JInternalFrame
    private void thisComponentHidden(ComponentEvent evt) 
    {
       this.desconectarBD();
+      txtConsulta.setEnabled(false);
+      txtConsulta.setText("Por favor, ingresar el usuario y contrasenia para realizar consultas");
+      btnIngresarCredenciales.setVisible(true);
+      btnEjecutar.setVisible(false);
+      botonBorrar.setVisible(false);
    }
 
    private void btnEjecutarActionPerformed(ActionEvent evt) 
