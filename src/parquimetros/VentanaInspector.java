@@ -397,7 +397,7 @@ public class VentanaInspector extends javax.swing.JInternalFrame
 				String calleM = rescheck.getString("calle");
 				int alturaM = rescheck.getInt("Altura");
 				String turnoM = rescheck.getString("turno");
-				int id_asM = rescheck.getInt("id_asoicado_con");
+				int id_asM = rescheck.getInt("id_asociado_con");
 				if(legaM == Integer.parseInt(legajo) && calleM.contentEquals(call) && alturaM==alt) {
 					esta=true;
 					turn = turnoM;
@@ -416,7 +416,7 @@ public class VentanaInspector extends javax.swing.JInternalFrame
 	   DateTimeFormatter horForm = DateTimeFormatter.ofPattern("HH:mm");
 	   String formatedHor = hor.format(horForm);
 	   //La hora actual es entre las 8 y las 13:59 o entre las 14 y las 20.
-	   boolean turno = (turn.equals("M") && formatedHor.compareTo("08:00")>0 && formatedHor.compareTo("13:59")<0) | (turn.equals("T") && formatedHor.compareTo("14:00")>0 && formatedHor.compareTo("20:00")<0);
+	   boolean turno = (turn.equals("m") && formatedHor.compareTo("08:00")>0 && formatedHor.compareTo("13:59")<0) | (turn.equals("t") && formatedHor.compareTo("14:00")>0 && formatedHor.compareTo("20:00")<0);
 	   
 	   //El inspector no esta asociado con la ubicacion o esta fuera de su turno.
 	   if(!esta|!turno) {
@@ -468,7 +468,7 @@ public class VentanaInspector extends javax.swing.JInternalFrame
 		   			consUbic.execute();	
 		   			
 		   			//Recupero el numero de multa luego de la insercion de dicha multa.
-		   			multas = tabla.getConnection().prepareStatement("SELECT * FROM multa);", ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_READ_ONLY);
+		   			multas = tabla.getConnection().prepareStatement("SELECT * FROM multa;", ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_READ_ONLY);
 		   			multas.execute();
 				   	ResultSet resmul = multas.getResultSet();
 				   	while(resmul.next()) {
@@ -488,7 +488,7 @@ public class VentanaInspector extends javax.swing.JInternalFrame
 		   			
 		   			
 		   			//Inserto en la tabla temporal de multas las multa que labro
-		   			insert = tabla.getConnection().prepareStatement("INSERT INTO MULTILLAS(numero_de_multa,fecha,hora,calle,patente_del_auto,legajo_del_inspector)"+
+		   			insert = tabla.getConnection().prepareStatement("INSERT INTO MULTILLAS(numero_de_multa,fecha,hora,calle,altura,patente_del_auto,legajo_del_inspector) "+
 								"VALUES ('"+ nMulta + "','" +
 								formatedDate +"','" + formatedHour + "','" +
 								call + "','" + alt + "','" +
