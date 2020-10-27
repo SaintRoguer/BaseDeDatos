@@ -327,6 +327,55 @@ public class VentanaInspector extends javax.swing.JInternalFrame
 	   
    }
    
+   private void refrescarTabla()
+   {
+      try
+      {    
+    	 // seteamos la consulta a partir de la cual se obtendran los datos para llenar la tabla
+    	  tabla.setSelectSql("select * from MULTILLAS");
+
+    	  // obtenemos el modelo de la tabla a partir de la consulta para 
+    	  // modificar la forma en que se muestran de algunas columnas  
+    	  tabla.createColumnModelFromQuery();    	    
+    	  for (int i = 0; i < tabla.getColumnCount(); i++)
+    	  { // para que muestre correctamente los valores de tipo TIME (hora)  		   		  
+    		 if	 (tabla.getColumn(i).getType()==Types.TIME)  
+    		 {    		 
+    		    tabla.getColumn(i).setType(Types.CHAR);  
+  	       	 }
+    		 // cambiar el formato en que se muestran los valores de tipo DATE
+    		 if	 (tabla.getColumn(i).getType()==Types.DATE)
+    		 {
+    		    tabla.getColumn(i).setDateFormat("dd/MM/YYYY");
+    		 }
+          }  
+    	  // actualizamos el contenido de la tabla.   	     	  
+    	  tabla.refresh();
+    	  // No es necesario establecer  una conexión, crear una sentencia y recuperar el 
+    	  // resultado en un resultSet, esto lo hace automáticamente la tabla (DBTable) a 
+    	  // patir de la conexión y la consulta seteadas con connectDatabase() y setSelectSql() respectivamente.
+          
+    	  
+    	  
+       }
+      catch (SQLException ex)
+      {
+         // en caso de error, se muestra la causa en la consola
+         System.out.println("SQLException: " + ex.getMessage());
+         System.out.println("SQLState: " + ex.getSQLState());
+         System.out.println("VendorError: " + ex.getErrorCode());
+         JOptionPane.showMessageDialog(SwingUtilities.getWindowAncestor(this),
+                                       ex.getMessage() + "\n", 
+                                       "Error al ejecutar la consulta.",
+                                       JOptionPane.ERROR_MESSAGE);
+         
+      }
+      
+
+
+      
+   }
+   
    
    private void ejecutarLabrarMultas() {
 	   PreparedStatement multas;
@@ -460,7 +509,7 @@ public class VentanaInspector extends javax.swing.JInternalFrame
 		   	}
 	   }
 	   
-	 
+	 refrescarTabla();
    
    }
 }
