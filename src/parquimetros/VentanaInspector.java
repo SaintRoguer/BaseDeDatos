@@ -69,6 +69,8 @@ public class VentanaInspector extends javax.swing.JInternalFrame
     private String call;
     private int alt;
     
+    
+    
    public VentanaInspector() 
    {
       super();
@@ -183,7 +185,14 @@ public class VentanaInspector extends javax.swing.JInternalFrame
       tabla.setEditable(false);
       tabla.setBounds(0, 362, 784, 208);
       getContentPane().add(tabla);
+      
+      
+      
+      
+      
       initGUI();
+      
+      
       
 		
    }
@@ -220,7 +229,11 @@ public class VentanaInspector extends javax.swing.JInternalFrame
 			if(tabla.getConnection().isValid(5)) {
 				btnIngresarCredenciales.setVisible(false);
 				btnIngresarLegajo.setVisible(true);
-				
+				//Crea una tabla temporal con los nuevos registros de multas.
+				PreparedStatement tablaTemp = tabla.getConnection().prepareStatement("CREATE TEMPORARY TABLE MULTILLAS(numero_de_multa INT UNSIGNED NOT NULL,"
+						+ " fecha DATE NOT NULL, hora TIME(2) NOT NULL, calle VARCHAR(45) NOT NULL, altura INT UNSIGNED NOT NULL, patente_del_auto VARCHAR(6) NOT NULL,"
+						+ " legajo_del_inspector INT UNSIGNED NOT NULL);", ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_READ_ONLY);
+				tablaTemp.execute();
 				
 			}
 			else
@@ -349,7 +362,7 @@ public class VentanaInspector extends javax.swing.JInternalFrame
 	   DateTimeFormatter horForm = DateTimeFormatter.ofPattern("HH:mm");
 	   String formatedHor = hor.format(horForm);
 	   //La hora actual es entre las 8 y las 13:59 o entre las 14 y las 20.
-	   boolean turno = (turn.equals("M") && formatedHor.compareTo("08;00")>0 && formatedHor.compareTo("13:59")<0) | (turn.equals("T") && formatedHor.compareTo("14:00")>0 && formatedHor.compareTo("20:00")<0);
+	   boolean turno = (turn.equals("M") && formatedHor.compareTo("08:00")>0 && formatedHor.compareTo("13:59")<0) | (turn.equals("T") && formatedHor.compareTo("14:00")>0 && formatedHor.compareTo("20:00")<0);
 	   
 	   //El inspector no esta asociado con la ubicacion o esta fuera de su turno.
 	   if(!esta|!turno) {
