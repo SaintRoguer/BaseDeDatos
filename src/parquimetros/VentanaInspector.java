@@ -91,8 +91,8 @@ public class VentanaInspector extends javax.swing.JInternalFrame
       btnIngresarCredenciales.setBounds(30, 11, 135, 23);
       panelInspector.add(btnIngresarCredenciales);
       
-      lblPatentesSinIngresar = new JLabel("Patentes seleccionadas");
-      lblPatentesSinIngresar.setBounds(558, 1, 112, 14);
+      lblPatentesSinIngresar = new JLabel("Patentes ingresadas:");
+      lblPatentesSinIngresar.setBounds(559, 15, 112, 14);
       panelInspector.add(lblPatentesSinIngresar);
       
       scrollPane_1 = new JScrollPane();
@@ -126,8 +126,8 @@ public class VentanaInspector extends javax.swing.JInternalFrame
      
       scrollPane.setViewportView(list_1);
       
-      lblPatentesEnUbicacion = new JLabel("Patentes en ubicacion");
-      lblPatentesEnUbicacion.setBounds(263, 1, 105, 14);
+      lblPatentesEnUbicacion = new JLabel("Patentes en ubicacion:");
+      lblPatentesEnUbicacion.setBounds(262, 15, 105, 14);
       panelInspector.add(lblPatentesEnUbicacion);
       
       btnLabrarMultas = new JButton("Labrar multas");
@@ -395,7 +395,7 @@ public class VentanaInspector extends javax.swing.JInternalFrame
 		   while(rescheck.next()) {
 				int legaM = rescheck.getInt("legajo");
 				String calleM = rescheck.getString("calle");
-				int alturaM = rescheck.getInt("Altura");
+				int alturaM = rescheck.getInt("altura");
 				String turnoM = rescheck.getString("turno");
 				int id_asM = rescheck.getInt("id_asociado_con");
 				if(legaM == Integer.parseInt(legajo) && calleM.contentEquals(call) && alturaM==alt) {
