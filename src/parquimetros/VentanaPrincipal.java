@@ -30,18 +30,12 @@ public class VentanaPrincipal extends javax.swing.JFrame
 
    private VentanaInspector ventanaBarcos;
    private VentanaConsultas ventanaConsultas;
-   private JButton btnCerrar;
-   private JLabel lblAcercaDe4;
-   private JLabel lblAcercaDe3;
-   private JLabel lblAcercaDe2;
-   private JLabel lblAcercaDe1;
-   private JDialog dlgAcercaDe;
 
    private JDesktopPane jDesktopPane1;
    private JMenuBar jMenuBar1;
    private JMenuItem mniSalir;
    private JSeparator jSeparator1;
-   private JMenuItem mniBarcos;
+   private JMenuItem mniInspector;
    private JMenuItem mniConsultas;
    private JMenu mnuEjemplos;
 
@@ -106,10 +100,10 @@ public class VentanaPrincipal extends javax.swing.JFrame
                jMenuBar1.add(mnuEjemplos);
                mnuEjemplos.setText("Ejemplos");
                {
-                  mniBarcos = new JMenuItem();
-                  mnuEjemplos.add(mniBarcos);
-                  mniBarcos.setText("Dispositivo del inspector");
-                  mniBarcos.addActionListener(new ActionListener() {
+                  mniInspector = new JMenuItem();
+                  mnuEjemplos.add(mniInspector);
+                  mniInspector.setText("Dispositivo del inspector");
+                  mniInspector.addActionListener(new ActionListener() {
                      public void actionPerformed(ActionEvent evt) {
                         mniBarcosActionPerformed(evt);
                      }
@@ -174,10 +168,6 @@ public class VentanaPrincipal extends javax.swing.JFrame
       this.ventanaConsultas.setVisible(true);      
    }
 
-   private void btnCerrarActionPerformed(ActionEvent evt) 
-   {
-      dlgAcercaDe.setVisible(false);
-   }
    
    private void centrarDialogo(javax.swing.JDialog p_dialogo)
    {
