@@ -12,6 +12,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 //import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 
 import javax.swing.BorderFactory;
 import javax.swing.DefaultListModel;
@@ -166,8 +167,10 @@ public class VentanaInspector extends javax.swing.JInternalFrame
       txtIngresarpatentes.setEnabled(false);
       txtIngresarpatentes.addActionListener(new ActionListener() {
     	  	public void actionPerformed(ActionEvent arg0) {
-    	  		if(txtIngresarpatentes.getText().length()==6) 
+    	  		if(patenteValida(txtIngresarpatentes.getText()))
     	  			model.addElement(""+txtIngresarpatentes.getText());
+    	  		else
+    	  			JOptionPane.showMessageDialog(null, "Patente invalida", "Patente invalida", JOptionPane.INFORMATION_MESSAGE);
     	  		txtIngresarpatentes.setText("");
     	  		if(!model.isEmpty())
     	  			btnLabrarMultas.setEnabled(true);
@@ -198,7 +201,21 @@ public class VentanaInspector extends javax.swing.JInternalFrame
 		
    }
  
-   private void initGUI() 
+   protected boolean patenteValida(String patente) {
+	   boolean valida = false;
+	   if(patente.length() == 6) {
+		   try {
+			   Statement consulta = tabla.getConnection().createStatement();
+			   consulta.execute("SELECT patente FROM automoviles;");
+			   ResultSet result = consulta.getResultSet();
+			   while(result.next() && !valida)
+				   valida = result.getString("patente").equals(patente);
+		   } catch (SQLException e) {e.printStackTrace();}
+	   }
+	   return valida;
+   }
+
+private void initGUI() 
    {
       try {
          setPreferredSize(new Dimension(800, 600));
