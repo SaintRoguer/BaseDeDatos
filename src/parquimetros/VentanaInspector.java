@@ -82,14 +82,14 @@ public class VentanaInspector extends javax.swing.JInternalFrame
       getContentPane().add(panelInspector);
       panelInspector.setLayout(null);
       
-      btnIngresarCredenciales = new JButton("Ingresar credenciales");
+      btnIngresarCredenciales = new JButton("Conectarse a la BD");
       btnIngresarCredenciales.addActionListener(new ActionListener() {
       	public void actionPerformed(ActionEvent arg0) {
       		ejecutarIngresarCredenciales();
       			
       	}
       });
-      btnIngresarCredenciales.setBounds(30, 11, 135, 23);
+      btnIngresarCredenciales.setBounds(30, 37, 135, 23);
       panelInspector.add(btnIngresarCredenciales);
       
       lblPatentesSinIngresar = new JLabel("Patentes ingresadas:");
@@ -128,7 +128,7 @@ public class VentanaInspector extends javax.swing.JInternalFrame
       scrollPane.setViewportView(list_1);
       
       lblPatentesEnUbicacion = new JLabel("Patentes en ubicacion:");
-      lblPatentesEnUbicacion.setBounds(262, 15, 105, 14);
+      lblPatentesEnUbicacion.setBounds(262, 15, 112, 14);
       panelInspector.add(lblPatentesEnUbicacion);
       
       btnLabrarMultas = new JButton("Labrar multas");
@@ -136,7 +136,6 @@ public class VentanaInspector extends javax.swing.JInternalFrame
       btnLabrarMultas.addActionListener(new ActionListener() {
         	public void actionPerformed(ActionEvent arg0) {
         		ejecutarLabrarMultas();
-        			
         	}
         });
       btnLabrarMultas.setBounds(30, 173, 135, 23);
@@ -146,7 +145,6 @@ public class VentanaInspector extends javax.swing.JInternalFrame
       btnIngresarLegajo.addActionListener(new ActionListener() {
         	public void actionPerformed(ActionEvent arg0) {
         		ejecutarIngresarLegajo();
-        			
         	}
         });
       
@@ -163,7 +161,7 @@ public class VentanaInspector extends javax.swing.JInternalFrame
       menuBar.add(mnSeleccionarUbicacion);
       
       txtIngresarpatentes = new JTextField();
-      txtIngresarpatentes.setText("IngresarPatentes");
+      txtIngresarpatentes.setText("Ingresar Patente");
       txtIngresarpatentes.setEnabled(false);
       txtIngresarpatentes.addActionListener(new ActionListener() {
     	  	public void actionPerformed(ActionEvent arg0) {
@@ -177,7 +175,7 @@ public class VentanaInspector extends javax.swing.JInternalFrame
     	  	}
     	  
       });
-      txtIngresarpatentes.setBounds(62, 120, 89, 20);
+      txtIngresarpatentes.setBounds(62, 120, 103, 20);
       panelInspector.add(txtIngresarpatentes);
       txtIngresarpatentes.setColumns(10);
       
@@ -262,6 +260,7 @@ private void initGUI()
 			e.printStackTrace();
 		}
 	}
+   
    private void ejecutarIngresarLegajo() {
 	   IngresarLegajo IngLeg = new IngresarLegajo(tabla);
 	   IngLeg.setVisible(true);
@@ -269,6 +268,7 @@ private void initGUI()
 		   legajo = IngLeg.getLegajo();
 		   menuBar.setEnabled(true);
 		   txtIngresarpatentes.setEnabled(true);
+		   btnIngresarLegajo.setVisible(false);
 		   cargarUbicaciones();
 	   }
 	   	else
