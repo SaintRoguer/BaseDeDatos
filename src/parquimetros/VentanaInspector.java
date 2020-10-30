@@ -67,8 +67,8 @@ public class VentanaInspector extends javax.swing.JInternalFrame
     
     private String legajo;
     private int par;
-    private String call;
-    private int alt;
+    private String calleActual;
+    private int alturaActual;
     
     
     
@@ -316,8 +316,8 @@ private void initGUI()
 	   model.clear();
 	   
 	   par=parquimetro;
-	   call=callie;
-	   alt=alturia;
+	   calleActual=callie;
+	   alturaActual=alturia;
 	   PreparedStatement consUbic;
 	   try {
 		consUbic = tabla.getConnection().prepareStatement("SELECT * FROM estacionados;", ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_READ_ONLY);
@@ -416,7 +416,7 @@ private void initGUI()
 				int alturaM = rescheck.getInt("altura");
 				String turnoM = rescheck.getString("turno");
 				int id_asM = rescheck.getInt("id_asociado_con");
-				if(legaM == Integer.parseInt(legajo) && calleM.contentEquals(call) && alturaM==alt) {
+				if(legaM == Integer.parseInt(legajo) && calleM.contentEquals(calleActual) && alturaM==alturaActual) {
 					esta=true;
 					turn = turnoM;
 					id_as = id_asM;
@@ -460,15 +460,18 @@ private void initGUI()
 		   		String formatedHour = hour.format(hourForm);
 		   		
 		   		//chequeo si la patenteI esta estacionada.
-		   		boolean stacionado = false;
+		   		boolean estacionado = false;
+		   		String pateneteEst, alturaEst, calleEst;
 		   		try {
-		   			PreparedStatement estacionado = tabla.getConnection().prepareStatement("SELECT patente FROM estacionados;", ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_READ_ONLY);
-		   			estacionado.execute();
-				   	ResultSet resest = estacionado.getResultSet();
-				   	while(resest.next()) {
-						String pat = resest.getString("patente");
-						if(pat.equals(patenteI))
-							stacionado=true;
+		   			PreparedStatement consulta = tabla.getConnection().prepareStatement("SELECT * FROM estacionados;", ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_READ_ONLY);
+		   			consulta.execute();
+				   	ResultSet results = consulta.getResultSet();
+				   	while(results.next()) {
+				   		pateneteEst = results.getString("patente");
+				   		alturaEst = results.getString("altura");
+				   		calleEst = results.getString("calle");
+						if(pateneteEst.equals(patenteI) && alturaEst.equals(alturaActual) && calleEst.equals(calleActual))
+							estacionado=true;
 				   	}
 				   	
 				} catch (SQLException e1) {
@@ -476,7 +479,7 @@ private void initGUI()
 					e1.printStackTrace();
 				}
 		   		//si no esta estacionado labro la multa, insertando una multa a la base de datos.
-		   		if(!stacionado) {
+		   		if(!estacionado) {
 		   		
 		   		try {
 		   			consUbic = tabla.getConnection().prepareStatement("INSERT INTO multa(fecha,hora,patente,id_asociado_con)"+
@@ -509,7 +512,7 @@ private void initGUI()
 		   			insert = tabla.getConnection().prepareStatement("INSERT INTO MULTILLAS(numero_de_multa,fecha,hora,calle,altura,patente_del_auto,legajo_del_inspector) "+
 								"VALUES ('"+ nMulta + "','" +
 								formatedDate +"','" + formatedHour + "','" +
-								call + "','" + alt + "','" +
+								calleActual + "','" + alturaActual + "','" +
 								patenteI +"','" + legajo + "')"
 								, ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_READ_ONLY);
 		   			insert.execute();	

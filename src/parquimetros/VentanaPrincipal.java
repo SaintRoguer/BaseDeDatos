@@ -28,7 +28,7 @@ import javax.swing.WindowConstants;
 public class VentanaPrincipal extends javax.swing.JFrame 
 {
 
-   private VentanaInspector ventanaBarcos;
+   private VentanaInspector ventanaInspector;
    private VentanaConsultas ventanaConsultas;
 
    private JDesktopPane jDesktopPane1;
@@ -37,7 +37,7 @@ public class VentanaPrincipal extends javax.swing.JFrame
    private JSeparator jSeparator1;
    private JMenuItem mniInspector;
    private JMenuItem mniConsultas;
-   private JMenu mnuEjemplos;
+   private JMenu mnuModos;
 
    /**
    * Auto-generated main method to display this JFrame
@@ -59,10 +59,10 @@ public class VentanaPrincipal extends javax.swing.JFrame
 
       initGUI();
 
-      this.ventanaBarcos = new VentanaInspector();
-      ventanaBarcos.setLocation(0, -12);
-      this.ventanaBarcos.setVisible(false);
-      this.jDesktopPane1.add(this.ventanaBarcos);
+      this.ventanaInspector = new VentanaInspector();
+      ventanaInspector.setLocation(0, 0);
+      this.ventanaInspector.setVisible(false);
+      this.jDesktopPane1.add(this.ventanaInspector);
       
       this.ventanaConsultas = new VentanaConsultas();
       this.ventanaConsultas.setVisible(false);
@@ -96,12 +96,12 @@ public class VentanaPrincipal extends javax.swing.JFrame
             jMenuBar1 = new JMenuBar();
             setJMenuBar(jMenuBar1);
             {
-               mnuEjemplos = new JMenu();
-               jMenuBar1.add(mnuEjemplos);
-               mnuEjemplos.setText("Ejemplos");
+               mnuModos = new JMenu();
+               jMenuBar1.add(mnuModos);
+               mnuModos.setText("Modos");
                {
                   mniInspector = new JMenuItem();
-                  mnuEjemplos.add(mniInspector);
+                  mnuModos.add(mniInspector);
                   mniInspector.setText("Dispositivo del inspector");
                   mniInspector.addActionListener(new ActionListener() {
                      public void actionPerformed(ActionEvent evt) {
@@ -111,7 +111,7 @@ public class VentanaPrincipal extends javax.swing.JFrame
                }
                {
                   mniConsultas = new JMenuItem();
-                  mnuEjemplos.add(mniConsultas);
+                  mnuModos.add(mniConsultas);
                   mniConsultas.setText("Consultas");
                   mniConsultas.addActionListener(new ActionListener() {
                      public void actionPerformed(ActionEvent evt) {
@@ -122,11 +122,11 @@ public class VentanaPrincipal extends javax.swing.JFrame
                
                {
                   jSeparator1 = new JSeparator();
-                  mnuEjemplos.add(jSeparator1);
+                  mnuModos.add(jSeparator1);
                }
                {
                   mniSalir = new JMenuItem();
-                  mnuEjemplos.add(mniSalir);
+                  mnuModos.add(mniSalir);
                   mniSalir.setText("Salir");
                   mniSalir.addActionListener(new ActionListener() {
                      public void actionPerformed(ActionEvent evt) {
@@ -152,10 +152,10 @@ public class VentanaPrincipal extends javax.swing.JFrame
    {
       try
       {
-         this.ventanaBarcos.setMaximum(true);
+         this.ventanaInspector.setMaximum(true);
       }
       catch (PropertyVetoException e) {}
-      this.ventanaBarcos.setVisible(true);      
+      this.ventanaInspector.setVisible(true);      
    }
    
    private void mniConsultasActionPerformed(ActionEvent evt) 

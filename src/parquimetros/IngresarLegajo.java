@@ -45,12 +45,12 @@ public class IngresarLegajo extends javax.swing.JDialog {
 		this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		this.getContentPane().setLayout(null);
 		
-		JLabel lblUsuario = new JLabel("N° Legajo:");
-		lblUsuario.setBounds(46, 33, 51, 14);
+		JLabel lblUsuario = new JLabel("Nro Legajo:");
+		lblUsuario.setBounds(26, 33, 71, 14);
 		this.getContentPane().add(lblUsuario);
 		
 		JLabel lblContrasea = new JLabel("Contrasenia:");
-		lblContrasea.setBounds(37, 72, 60, 14);
+		lblContrasea.setBounds(26, 72, 71, 14);
 		this.getContentPane().add(lblContrasea);
 		
 		textUsuario = new JTextField();
