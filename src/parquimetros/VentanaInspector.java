@@ -319,6 +319,33 @@ private void initGUI()
 	   calleActual=callie;
 	   alturaActual=alturia;
 	   PreparedStatement consUbic;
+	   PreparedStatement consAccede;
+	   
+		 //Fecha actual.
+	  		LocalDateTime date = LocalDateTime.now();
+	  		DateTimeFormatter dateForm = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+	  		String formatedDate = date.format(dateForm);
+	  
+	  
+	  		//Hora actual
+	  		LocalDateTime hour = LocalDateTime.now();
+	  		DateTimeFormatter hourForm = DateTimeFormatter.ofPattern("HH:mm:ss.SS");
+	  		String formatedHour = hour.format(hourForm);
+	  		
+		   //Registra el acceso a parquimetro.
+		    try {
+				consAccede = tabla.getConnection().prepareStatement("INSERT INTO ACCEDE(legajo,id_parq,fecha,hora) "+
+						"VALUES ('"+ legajo + "','" +
+						par +"','"+
+						formatedDate +"','" + formatedHour + "')"
+						, ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_READ_ONLY);
+				
+				consAccede.execute();
+			} catch (SQLException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+			
 	   try {
 		consUbic = tabla.getConnection().prepareStatement("SELECT * FROM estacionados;", ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_READ_ONLY);
 		consUbic.execute();
