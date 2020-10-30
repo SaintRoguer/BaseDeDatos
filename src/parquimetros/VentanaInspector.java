@@ -461,17 +461,22 @@ private void initGUI()
 		   		
 		   		//chequeo si la patenteI esta estacionada.
 		   		boolean estacionado = false;
-		   		String pateneteEst, alturaEst, calleEst;
+		   		boolean multar = false;
+		   		String pateneteEst, alturaEstS, calleEst;
+		   		int alturaEst;
 		   		try {
 		   			PreparedStatement consulta = tabla.getConnection().prepareStatement("SELECT * FROM estacionados;", ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_READ_ONLY);
 		   			consulta.execute();
 				   	ResultSet results = consulta.getResultSet();
 				   	while(results.next()) {
 				   		pateneteEst = results.getString("patente");
-				   		alturaEst = results.getString("altura");
+				   		alturaEstS = results.getString("altura");
+				   		alturaEst = Integer.parseInt(alturaEstS);
 				   		calleEst = results.getString("calle");
-						if(pateneteEst.equals(patenteI) && alturaEst.equals(alturaActual) && calleEst.equals(calleActual))
+						if(pateneteEst.equals(patenteI) && alturaEst == alturaActual && calleEst.equals(calleActual))
 							estacionado=true;
+						else if(pateneteEst.equals(patenteI) && alturaEst != alturaActual && !(calleEst.equals(calleActual)))
+							multar=true;
 				   	}
 				   	
 				} catch (SQLException e1) {
@@ -479,7 +484,7 @@ private void initGUI()
 					e1.printStackTrace();
 				}
 		   		//si no esta estacionado labro la multa, insertando una multa a la base de datos.
-		   		if(!estacionado) {
+		   		if(!estacionado || multar) {
 		   		
 		   		try {
 		   			consUbic = tabla.getConnection().prepareStatement("INSERT INTO multa(fecha,hora,patente,id_asociado_con)"+
