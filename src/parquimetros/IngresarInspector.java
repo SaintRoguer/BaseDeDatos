@@ -7,6 +7,7 @@ import javax.swing.JInternalFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
+import javax.swing.SwingUtilities;
 
 import quick.dbtable.DBTable;
 
@@ -136,6 +137,10 @@ public class IngresarInspector extends javax.swing.JDialog{
 				System.out.println("SQLException: " + ex.getMessage());
 				System.out.println("SQLState: " + ex.getSQLState());
 				System.out.println("VendorError: " + ex.getErrorCode());
+				JOptionPane.showMessageDialog(SwingUtilities.getWindowAncestor(this),
+                        "El usuario o contraseña son incorrectos" + "\n", 
+                        "Error de credenciales.",
+                        JOptionPane.ERROR_MESSAGE);
 			} catch (ClassNotFoundException e) {
 				e.printStackTrace();
 			}
