@@ -149,7 +149,7 @@ public class VentanaConsultas extends javax.swing.JInternalFrame
         	// Agrega la tabla al frame (no necesita JScrollPane como Jtable)
             getContentPane().add(tabla);           
                       
-           // setea la tabla para sólo lectura (no se puede editar su contenido)  
+           // setea la tabla para sî‰ o lectura (no se puede editar su contenido)  
            tabla.setEditable(false);       
            
            
@@ -191,33 +191,25 @@ public class VentanaConsultas extends javax.swing.JInternalFrame
 
    private void refrescarTabla()
    {
-      try
-      {    
-    	 // seteamos la consulta a partir de la cual se obtendran los datos para llenar la tabla
-    	 tabla.setSelectSql(this.txtConsulta.getText().trim());
-
-    	  // obtenemos el modelo de la tabla a partir de la consulta para 
-    	  // modificar la forma en que se muestran de algunas columnas  
-    	  tabla.createColumnModelFromQuery();    	    
-    	  for (int i = 0; i < tabla.getColumnCount(); i++)
-    	  { // para que muestre correctamente los valores de tipo TIME (hora)  		   		  
-    		 if	 (tabla.getColumn(i).getType()==Types.TIME)  
-    		 {    		 
-    		    tabla.getColumn(i).setType(Types.CHAR);  
-  	       	 }
-    		 // cambiar el formato en que se muestran los valores de tipo DATE
-    		 if	 (tabla.getColumn(i).getType()==Types.DATE)
-    		 {
-    		    tabla.getColumn(i).setDateFormat("dd/MM/YYYY");
-    		 }
-          }  
-    	  // actualizamos el contenido de la tabla.   	     	  
-    	  tabla.refresh();
-    	  // No es necesario establecer  una conexión, crear una sentencia y recuperar el 
-    	  // resultado en un resultSet, esto lo hace automáticamente la tabla (DBTable) a 
-    	  // patir de la conexión y la consulta seteadas con connectDatabase() y setSelectSql() respectivamente.
-          
+	   try
+	   {   
     	  
+
+		   String text = this.txtConsulta.getText().trim();
+		   PreparedStatement statement = tabla.getConnection().prepareStatement(text);
+		   
+		   if(text.toLowerCase().startsWith("select")) {
+			   statement.execute();
+			   ResultSet rs = statement.getResultSet();
+			   tabla.refresh(rs);
+		   }
+		   
+		   else if(text.toLowerCase().startsWith("insert") || text.toLowerCase().startsWith("update") || text.toLowerCase().startsWith("delete")) {
+			   statement.executeUpdate();
+			   JOptionPane.showMessageDialog(null, "La sentencia fue ejecutada existosamente.", "EjecuciÃ³n excitosa", JOptionPane.INFORMATION_MESSAGE);
+	            
+			   
+		   }
     	  
        }
       catch (SQLException ex)
