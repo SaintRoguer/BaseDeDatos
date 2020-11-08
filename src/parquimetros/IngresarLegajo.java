@@ -7,12 +7,15 @@ import javax.swing.JInternalFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
+import javax.xml.bind.DatatypeConverter;
 
 import quick.dbtable.DBTable;
 
 import javax.swing.JPasswordField;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.awt.event.ActionEvent;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -89,7 +92,7 @@ public class IngresarLegajo extends javax.swing.JDialog {
 	private void conectar() {
 		boolean success = false;
 		String userDB;
-		String pwDB;
+		String hash;
 		String userIngresado = textUsuario.getText();
 		char[] pwArray = passwordField.getPassword();
 		String pwIngresado = String.copyValueOf(pwArray);
@@ -97,14 +100,29 @@ public class IngresarLegajo extends javax.swing.JDialog {
 		
 		
 		try {
+			MessageDigest md;
+			byte[] digest;
+			String myHash;
+        	md = MessageDigest.getInstance("MD5");
+        	md.update(pwIngresado.getBytes());
+        	digest = md.digest();
+        	myHash = DatatypeConverter.printHexBinary(digest).toUpperCase();
+        	
+	        	System.out.println(myHash);
+	        	System.out.println();
+			
 			PreparedStatement consulta = tabla.getConnection().prepareStatement("SELECT legajo, password FROM Inspectores;", ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_READ_ONLY);
 			consulta.execute();	
 			ResultSet resultados = consulta.getResultSet();
 			
+			
 			while(resultados.next() && !success) {
 				userDB = resultados.getString("legajo");
-            	pwDB = resultados.getString("password");
-            	success = userIngresado.equals(userDB) && pwIngresado.equals(pwDB);
+            	hash = resultados.getString("password").toUpperCase();
+            	
+            		System.out.println(hash);
+            	
+            	success = myHash.equals(hash);
 			}
 			
 			if(!success) {
@@ -117,7 +135,9 @@ public class IngresarLegajo extends javax.swing.JDialog {
 		
 	
 		
-		} catch (SQLException e) {e.printStackTrace();}		
+		} 
+		catch (SQLException e) {e.printStackTrace();}
+		catch (NoSuchAlgorithmException e) {e.printStackTrace();}		
 	}
 		
 	public String getLegajo() {

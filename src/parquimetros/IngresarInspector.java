@@ -110,41 +110,45 @@ public class IngresarInspector extends javax.swing.JDialog{
 			String user = textUsuario.getText();
 			char[] pwArray = passwordField.getPassword();
 			String pw = String.copyValueOf(pwArray);
-			String us= "";
+			
+			
 			//Si el usuario no es inspector, falla el login.
-			if(user.contentEquals("inspector"))
-				us=user;
-			else
-				us="noinspector";
-				
 			
-			
-			try {
-	            String driver ="com.mysql.cj.jdbc.Driver";
-	        	String servidor = "localhost:3306";
-	        	String baseDatos = "parquimetros"; 
-	        	String usuario = us;
-	        	String clave = pw;
-	            String uriConexion = "jdbc:mysql://" + servidor + "/" + 
-	        	                     baseDatos +"?serverTimezone=America/Argentina/Buenos_Aires"; 
-	            tabla.connectDatabase(driver, uriConexion, usuario, clave);
-	            
-	            JOptionPane.showMessageDialog(null, "La conexion fue exitosa.", "Conexion exitosa", JOptionPane.INFORMATION_MESSAGE);
-	            
-				this.dispose();
 				
-			} catch (SQLException ex) {
-				System.out.println("SQLException: " + ex.getMessage());
-				System.out.println("SQLState: " + ex.getSQLState());
-				System.out.println("VendorError: " + ex.getErrorCode());
+			if(user.equals("inspector") && pw.equals("inspector")) {
+			
+				try {
+		            String driver ="com.mysql.cj.jdbc.Driver";
+		        	String servidor = "localhost:3306";
+		        	String baseDatos = "parquimetros"; 
+		        	String clave = pw;
+		            String uriConexion = "jdbc:mysql://" + servidor + "/" + 
+		        	                     baseDatos +"?serverTimezone=America/Argentina/Buenos_Aires"; 
+		            tabla.connectDatabase(driver, uriConexion, user, clave);
+		            
+		           
+		            JOptionPane.showMessageDialog(null, "La conexion fue exitosa.", "Conexion exitosa", JOptionPane.INFORMATION_MESSAGE);
+		            
+					this.dispose();
+					
+				} catch (SQLException ex) {
+					System.out.println("SQLException: " + ex.getMessage());
+			         System.out.println("SQLState: " + ex.getSQLState());
+			         System.out.println("VendorError: " + ex.getErrorCode());
+			         JOptionPane.showMessageDialog(SwingUtilities.getWindowAncestor(this),
+			                                       ex.getMessage() + "\n", 
+			                                       "Error al ejecutar la consulta.",
+			                                       JOptionPane.ERROR_MESSAGE);
+				} catch (ClassNotFoundException e) {
+					e.printStackTrace();
+				}
+			
+			}else {
 				JOptionPane.showMessageDialog(SwingUtilities.getWindowAncestor(this),
-                        "El usuario o contraseña son incorrectos" + "\n", 
+                        "El usuario o contrasenia son incorrectos" + "\n", 
                         "Error de credenciales.",
                         JOptionPane.ERROR_MESSAGE);
-			} catch (ClassNotFoundException e) {
-				e.printStackTrace();
 			}
-			
 			
 		}
 }

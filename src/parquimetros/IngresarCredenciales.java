@@ -7,6 +7,7 @@ import javax.swing.JInternalFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
+import javax.swing.SwingUtilities;
 
 import quick.dbtable.DBTable;
 
@@ -105,32 +106,38 @@ public class IngresarCredenciales extends javax.swing.JDialog{
 	
 	
 	private void conectar() {
+    	String usuario = textUsuario.getText();
+    	String clave = String.copyValueOf(passwordField.getPassword());
 		
-		String user = textUsuario.getText();
-		char[] pwArray = passwordField.getPassword();
-		String pw = String.copyValueOf(pwArray);
-		
-		try {
-            String driver ="com.mysql.cj.jdbc.Driver";
-        	String servidor = "localhost:3306";
-        	String baseDatos = "parquimetros"; 
-        	String usuario = textUsuario.getText();
-        	String clave = String.copyValueOf(passwordField.getPassword());
-            String uriConexion = "jdbc:mysql://" + servidor + "/" + 
-        	                     baseDatos +"?serverTimezone=America/Argentina/Buenos_Aires"; 
-            tabla.connectDatabase(driver, uriConexion, usuario, clave);
-            
-            JOptionPane.showMessageDialog(null, "La conexion fue exitosa.", "Conexion exitosa", JOptionPane.INFORMATION_MESSAGE);
-            
-			this.dispose();
+		if(usuario.equals("admin") && clave.equals("admin")) {
 			
-		} catch (SQLException ex) {
-			System.out.println("SQLException: " + ex.getMessage());
-			System.out.println("SQLState: " + ex.getSQLState());
-			System.out.println("VendorError: " + ex.getErrorCode());
-		} catch (ClassNotFoundException e) {
-			e.printStackTrace();
+			try {
+	            String driver ="com.mysql.cj.jdbc.Driver";
+	        	String servidor = "localhost:3306";
+	        	String baseDatos = "parquimetros"; 
+	            String uriConexion = "jdbc:mysql://" + servidor + "/" + 
+	        	                     baseDatos +"?serverTimezone=America/Argentina/Buenos_Aires"; 
+	            tabla.connectDatabase(driver, uriConexion, usuario, clave);
+	            
+	            JOptionPane.showMessageDialog(null, "La conexion fue exitosa.", "Conexion exitosa", JOptionPane.INFORMATION_MESSAGE);
+	            
+				this.dispose();
+				
+			} catch (SQLException ex) {
+				System.out.println("SQLException: " + ex.getMessage());
+				System.out.println("SQLState: " + ex.getSQLState());
+				System.out.println("VendorError: " + ex.getErrorCode());
+			} catch (ClassNotFoundException e) {
+				e.printStackTrace();
+			}
+			
 		}
+		
+		else
+			JOptionPane.showMessageDialog(SwingUtilities.getWindowAncestor(this),
+                    "El usuario o contrasenia son incorrectos" + "\n", 
+                    "Error de credenciales.",
+                    JOptionPane.ERROR_MESSAGE);
 		
 		
 	}
