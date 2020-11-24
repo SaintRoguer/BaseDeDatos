@@ -19,7 +19,7 @@ import javax.swing.JDialog;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-
+import javax.swing.JTable;
 import javax.swing.JTextArea;
 import javax.swing.SwingUtilities;
 import javax.swing.WindowConstants;
@@ -201,6 +201,8 @@ public class VentanaConsultas extends javax.swing.JInternalFrame
 		   if(text.toLowerCase().startsWith("select")) {
 			   statement.execute();
 			   ResultSet rs = statement.getResultSet();
+			   JTable table = tabla.getTable();
+		       table.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
 			   tabla.refresh(rs);
 		   }
 		   

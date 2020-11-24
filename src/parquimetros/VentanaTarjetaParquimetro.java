@@ -105,9 +105,7 @@ public class VentanaTarjetaParquimetro extends javax.swing.JInternalFrame  {
 	    		 model_2.clear();
 	    		 btnAperturaOCierre.setEnabled(false);
 	    		 
-	    		 if(model_2.isEmpty())
-	    			 	cargarTarjetas();
-	    	 }
+	       	 }
 	    	 public void mouseClicked(MouseEvent e) {}
 			 public void mouseEntered(MouseEvent e) {}
 			 public void mouseExited(MouseEvent e) {}
@@ -141,9 +139,9 @@ public class VentanaTarjetaParquimetro extends javax.swing.JInternalFrame  {
 	    scrollPane_1.setViewportView(list_1);
 	    list_1.addMouseListener(new MouseListener(){
 	    	 public void mousePressed(MouseEvent e) { 
-	    		 String sinParsear =(String) list.getSelectedValue();
-	    		 String[] parts = sinParsear.split(" : ");
-	    		 id_parqActual=Integer.parseInt(parts[1]);
+	    		 String sinParsear =(String) list_1.getSelectedValue();
+	    		 String[] par = sinParsear.split(" : ");
+	    		 id_parqActual=Integer.parseInt(par[1]);
 	    		 if(model_2.isEmpty())
 	    			 	cargarTarjetas();
 	    	 }
@@ -160,7 +158,7 @@ public class VentanaTarjetaParquimetro extends javax.swing.JInternalFrame  {
 	    scrollPane_2.setViewportView(list_2);
 	    list_2.addMouseListener(new MouseListener(){
 	    	 public void mousePressed(MouseEvent e) { 
-	    		 String sinParsear =(String) list.getSelectedValue();
+	    		 String sinParsear =(String) list_2.getSelectedValue();
 	    		 String[] parts = sinParsear.split(" : ");
 	    		 id_tarjetaActual=Integer.parseInt(parts[1]);
 	    		 btnAperturaOCierre.setEnabled(true);
@@ -178,10 +176,17 @@ public class VentanaTarjetaParquimetro extends javax.swing.JInternalFrame  {
 	    btnAperturaOCierre.setBounds(272, 362, 240, 23);
 	    panelParquimetro.add(btnAperturaOCierre);
 	    btnAperturaOCierre.setEnabled(false);
-	    
+	    btnAperturaOCierre.addActionListener(new ActionListener() {
+        	public void actionPerformed(ActionEvent arg0) {
+        		ejecutarScript();
+        	}
+        });
 	    // crea la tabla  
     	tabla = new DBTable();
-    	
+    	tabla.setEditable(false);
+        tabla.setBounds(0, 394, 784, 176);
+        getContentPane().add(tabla);
+        
 	    conectarBD();
 	    
 	    cargarUbicaciones();
@@ -249,6 +254,44 @@ public class VentanaTarjetaParquimetro extends javax.swing.JInternalFrame  {
 	      } catch (Exception e) {
 	         e.printStackTrace();
 	      }
+	   }
+	
+	private void refrescarTabla()
+	   {
+	      try
+	      {    
+	    	  
+	    	 // seteamos la consulta a partir de la cual se obtendran los datos para llenar la tabla
+	    	  tabla.setSelectSql("call conectar("+id_tarjetaActual+","+id_parqActual+");");
+
+	    	  // obtenemos el modelo de la tabla a partir de la consulta para 
+	    	  // modificar la forma en que se muestran de algunas columnas  
+	    	  
+	    	  JTable table = tabla.getTable();
+	    	  
+	    	  table.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
+	    	  tabla.refresh();
+	    	  
+	          
+	    	  
+	    	  
+	       }
+	      catch (SQLException ex)
+	      {
+	         // en caso de error, se muestra la causa en la consola
+	         System.out.println("SQLException: " + ex.getMessage());
+	         System.out.println("SQLState: " + ex.getSQLState());
+	         System.out.println("VendorError: " + ex.getErrorCode());
+	         JOptionPane.showMessageDialog(SwingUtilities.getWindowAncestor(this),
+	                                       ex.getMessage() + "\n", 
+	                                       "Error al ejecutar la consulta.",
+	                                       JOptionPane.ERROR_MESSAGE);
+	         
+	      }
+	      
+
+
+	      
 	   }
 
 
@@ -330,16 +373,12 @@ public class VentanaTarjetaParquimetro extends javax.swing.JInternalFrame  {
 		
 		
 	}
-		
 	
-
-
-
-
-
-
-
-
-
-
+	private void ejecutarScript() {
+		refrescarTabla();
+		
+		
+	}
+	
+	
 }
