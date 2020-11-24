@@ -65,6 +65,8 @@ public class VentanaInspector extends javax.swing.JInternalFrame
     private JMenuItem ubi;
     private JTextField txtIngresarpatentes;
     
+    
+    //Ubicacion actual y legajo de usuario ingresado.
     private String legajo;
     private int par;
     private String calleActual;

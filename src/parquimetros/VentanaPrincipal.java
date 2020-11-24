@@ -3,22 +3,16 @@ import java.awt.BorderLayout;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.beans.PropertyVetoException;
 
-import javax.swing.GroupLayout;
-import javax.swing.JButton;
-import javax.swing.JComponent;
+
 import javax.swing.JDesktopPane;
-import javax.swing.JDialog;
-import javax.swing.JLabel;
+
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JSeparator;
-import javax.swing.LayoutStyle;
-import javax.swing.SwingConstants;
+
 import javax.swing.SwingUtilities;
 import javax.swing.WindowConstants;
 
@@ -30,6 +24,7 @@ public class VentanaPrincipal extends javax.swing.JFrame
 
    private VentanaInspector ventanaInspector;
    private VentanaConsultas ventanaConsultas;
+   private VentanaTarjetaParquimetro ventanaTarjetaParquimetro;
 
    private JDesktopPane jDesktopPane1;
    private JMenuBar jMenuBar1;
@@ -38,6 +33,7 @@ public class VentanaPrincipal extends javax.swing.JFrame
    private JMenuItem mniInspector;
    private JMenuItem mniConsultas;
    private JMenu mnuModos;
+   private JMenuItem mntmTarjetaParquimetro;
 
    /**
    * Auto-generated main method to display this JFrame
@@ -67,7 +63,10 @@ public class VentanaPrincipal extends javax.swing.JFrame
       this.ventanaConsultas = new VentanaConsultas();
       this.ventanaConsultas.setVisible(false);
       this.jDesktopPane1.add(this.ventanaConsultas);
-
+      
+      this.ventanaTarjetaParquimetro = new VentanaTarjetaParquimetro();
+      ventanaTarjetaParquimetro.setVisible(false);
+      this.jDesktopPane1.add(this.ventanaTarjetaParquimetro);
    }
    
    private void initGUI() 
@@ -99,6 +98,15 @@ public class VentanaPrincipal extends javax.swing.JFrame
                mnuModos = new JMenu();
                jMenuBar1.add(mnuModos);
                mnuModos.setText("Modos");
+               {
+               	mntmTarjetaParquimetro = new JMenuItem("Parquimetro");
+               	mnuModos.add(mntmTarjetaParquimetro);
+               	mntmTarjetaParquimetro.addActionListener(new ActionListener() {
+               		public void actionPerformed(ActionEvent evt) {
+               			mniTarjetaParquimetroActionPerformed(evt);
+               		}
+               	});
+               }
                {
                   mniInspector = new JMenuItem();
                   mnuModos.add(mniInspector);
@@ -166,6 +174,16 @@ public class VentanaPrincipal extends javax.swing.JFrame
       }
       catch (PropertyVetoException e) {}
       this.ventanaConsultas.setVisible(true);      
+   }
+   
+   private void mniTarjetaParquimetroActionPerformed(ActionEvent evt)
+   {
+	   	try
+	   	{
+	   			this.ventanaTarjetaParquimetro.setMaximum(true);
+	   	}
+	   	catch(PropertyVetoException e) {}
+	   	this.ventanaTarjetaParquimetro.setVisible(true);
    }
 
    
