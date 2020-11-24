@@ -155,7 +155,7 @@ public class VentanaInspector extends javax.swing.JInternalFrame
       panelInspector.add(btnIngresarLegajo);
      
       menuBar = new JMenuBar();
-      menuBar.setBounds(30, 207, 97, 21);
+      menuBar.setBounds(30, 219, 135, 23);
       menuBar.setEnabled(false);
       panelInspector.add(menuBar);
       
@@ -172,10 +172,21 @@ public class VentanaInspector extends javax.swing.JInternalFrame
     	  		else
     	  			JOptionPane.showMessageDialog(null, "Patente invalida", "Patente invalida", JOptionPane.INFORMATION_MESSAGE);
     	  		txtIngresarpatentes.setText("");
-    	  		if(!model.isEmpty())
+    	  		if(!model.isEmpty()&& (calleActual != null))
     	  			btnLabrarMultas.setEnabled(true);
     	  	}
     	  
+      });
+      txtIngresarpatentes.addMouseListener(new MouseListener(){
+      public void mousePressed(MouseEvent e) {
+		  	txtIngresarpatentes.setText("");
+      }
+		
+
+		public void mouseClicked(MouseEvent e) {}
+		public void mouseEntered(MouseEvent e) {}
+		public void mouseExited(MouseEvent e) {}
+		public void mouseReleased(MouseEvent e) {};
       });
       txtIngresarpatentes.setBounds(62, 120, 103, 20);
       panelInspector.add(txtIngresarpatentes);
@@ -565,6 +576,6 @@ private void initGUI()
 	   }
 	   
 	 refrescarTabla();
-   
+	 btnLabrarMultas.setEnabled(false);
    }
 }
