@@ -263,15 +263,27 @@ public class VentanaTarjetaParquimetro extends javax.swing.JInternalFrame  {
 	    	  
 	    	 // seteamos la consulta a partir de la cual se obtendran los datos para llenar la tabla
 	    	  tabla.setSelectSql("call conectar("+id_tarjetaActual+","+id_parqActual+");");
-
+	    	  
 	    	  // obtenemos el modelo de la tabla a partir de la consulta para 
 	    	  // modificar la forma en que se muestran de algunas columnas  
-	    	  
+	     	  tabla.createColumnModelFromQuery();    	    
+	    	  for (int i = 0; i < tabla.getColumnCount(); i++)
+	    	  { // para que muestre correctamente los valores de tipo TIME (hora)  		   		  
+	    		 if	 (tabla.getColumn(i).getType()==Types.TIME)  
+	    		 {    		 
+	    		    tabla.getColumn(i).setType(Types.CHAR);  
+	  	       	 }
+	    		 // cambiar el formato en que se muestran los valores de tipo DATE
+	    		 if	 (tabla.getColumn(i).getType()==Types.DATE)
+	    		 {
+	    		    tabla.getColumn(i).setDateFormat("dd/MM/YYYY");
+	    		 }
+	          }  
 	    	  JTable table = tabla.getTable();
 	    	  
 	    	  table.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
+	    
 	    	  tabla.refresh();
-	    	  
 	          
 	    	  
 	    	  
