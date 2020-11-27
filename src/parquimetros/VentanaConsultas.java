@@ -149,7 +149,7 @@ public class VentanaConsultas extends javax.swing.JInternalFrame
         	// Agrega la tabla al frame (no necesita JScrollPane como Jtable)
             getContentPane().add(tabla);           
                       
-           // setea la tabla para so lectura (no se puede editar su contenido)  
+           // setea la tabla para s詹�o lectura (no se puede editar su contenido)  
            tabla.setEditable(false);       
            
            
@@ -203,12 +203,27 @@ public class VentanaConsultas extends javax.swing.JInternalFrame
 			   ResultSet rs = statement.getResultSet();
 			   JTable table = tabla.getTable();
 		       table.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
+		       
 			   tabla.refresh(rs);
+			   
+			   for (int i = 0; i < tabla.getColumnCount(); i++){ 
+				   // para que muestre correctamente los valores de tipo TIME (hora)  		   		  
+				   if(tabla.getColumn(i).getType()==Types.TIME)  
+		    		 {    		 
+		    		    tabla.getColumn(i).setType(Types.CHAR);  
+		  	       	 }
+		    		 // cambiar el formato en que se muestran los valores de tipo DATE
+				   if(tabla.getColumn(i).getType()==Types.DATE)
+		    		 {
+		    		    tabla.getColumn(i).setDateFormat("dd/MM/YYYY");
+		    		 }
+		          }
+			   table.repaint();
 		   }
 		   
 		   else if(text.toLowerCase().startsWith("insert") || text.toLowerCase().startsWith("update") || text.toLowerCase().startsWith("delete")) {
 			   statement.executeUpdate();
-			   JOptionPane.showMessageDialog(null, "La sentencia fue ejecutada existosamente.", "Ejecución excitosa", JOptionPane.INFORMATION_MESSAGE);
+			   JOptionPane.showMessageDialog(null, "La sentencia fue ejecutada existosamente.", "Ejecucion excitosa", JOptionPane.INFORMATION_MESSAGE);
 	            
 			   
 		   }
