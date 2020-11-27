@@ -13,7 +13,7 @@ import java.sql.ResultSet;
 //import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-
+import java.sql.ResultSetMetaData;
 import javax.swing.BorderFactory;
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
@@ -394,19 +394,27 @@ public class VentanaTarjetaParquimetro extends javax.swing.JInternalFrame  {
 			ResultSet resultados = consulta.getResultSet();
 			//Creo un item por cada ubicacion.
 			while(resultados.next()) {
-			String operacion = resultados.getString("operacion");
-			if(operacion.equals("cierre")){
-				 int minutos = resultados.getInt("minutos");
-				 int saldo = resultados.getInt("saldo_actual");
-				 String msgRes = "La operacion de "+operacion+" fue exitosa, tiempo transcurrido : "+minutos+" ,saldo actual en la tarjeta : "+saldo;
-				 JOptionPane.showMessageDialog(null, msgRes, "Operacion", JOptionPane.INFORMATION_MESSAGE);
-			}
-			else {
-				String valida = resultados.getString("op_valida");
-				int minutos = resultados.getInt("minutos_disponibles");
-				String msgRes = "La operacion de "+operacion+" fue exitosa? : "+valida+" ,la tarjeta tiene "+minutos+" minutos disponibles";
-				JOptionPane.showMessageDialog(null, msgRes, "Operacion", JOptionPane.INFORMATION_MESSAGE);
-			}
+				ResultSetMetaData meta = resultados.getMetaData();
+				if(meta.getColumnCount() == 3) {
+					String operacion = resultados.getString("operacion");
+					if(operacion.equals("cierre")){
+						 int minutos = resultados.getInt("minutos");
+						 int saldo = resultados.getInt("saldo_actual");
+						 String msgRes = "La operacion de "+operacion+" fue exitosa, tiempo transcurrido : "+minutos+" ,saldo actual en la tarjeta : "+saldo;
+						 JOptionPane.showMessageDialog(null, msgRes, "Operacion", JOptionPane.INFORMATION_MESSAGE);
+					}
+					else {
+						String valida = resultados.getString("op_valida");
+						int minutos = resultados.getInt("minutos_disponibles");
+						String msgRes = "La operacion de "+operacion+" fue exitosa? : "+valida+" ,la tarjeta tiene "+minutos+" minutos disponibles";
+						JOptionPane.showMessageDialog(null, msgRes, "Operacion", JOptionPane.INFORMATION_MESSAGE);
+					}
+				}
+				else {
+					String operacion = resultados.getString("Resultado");
+					String msgRes = "Ocurrio un error inesperado : "+operacion;
+					JOptionPane.showMessageDialog(null, msgRes, "Operacion", JOptionPane.ERROR_MESSAGE);
+				}
 			}
 				
 		} catch (SQLException e) {
