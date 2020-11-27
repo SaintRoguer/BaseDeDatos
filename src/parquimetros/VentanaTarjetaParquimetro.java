@@ -373,46 +373,7 @@ public class VentanaTarjetaParquimetro extends javax.swing.JInternalFrame  {
 		
 	}
 	
-	private void ejecutarScript() {
-		PreparedStatement consulta;
-		try {
-			consulta = tabla.getConnection().prepareStatement("call conectar("+id_tarjetaActual+","+id_parqActual+");", ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_READ_ONLY);
-			consulta.execute();
-			ResultSet resultados = consulta.getResultSet();
-			//Creo un item por cada ubicacion.
-			while(resultados.next()) {
-				ResultSetMetaData meta = resultados.getMetaData();
-				if(meta.getColumnCount() == 3) {
-					String operacion = resultados.getString("operacion");
-					if(operacion.equals("cierre")){
-						 int minutos = resultados.getInt("minutos");
-						 int saldo = resultados.getInt("saldo_actual");
-						 String msgRes = "La operacion de "+operacion+" fue exitosa, tiempo transcurrido : "+minutos+" ,saldo actual en la tarjeta : "+saldo;
-						 JOptionPane.showMessageDialog(null, msgRes, "Operacion", JOptionPane.INFORMATION_MESSAGE);
-					}
-					else {
-						String valida = resultados.getString("op_valida");
-						int minutos = resultados.getInt("minutos_disponibles");
-						String msgRes = "La operacion de "+operacion+" fue exitosa? : "+valida+" ,la tarjeta tiene "+minutos+" minutos disponibles";
-						JOptionPane.showMessageDialog(null, msgRes, "Operacion", JOptionPane.INFORMATION_MESSAGE);
-					}
-				}
-				else {
-					String operacion = resultados.getString("Resultado");
-					String msgRes = "Ocurrio un error inesperado : "+operacion;
-					JOptionPane.showMessageDialog(null, msgRes, "Operacion", JOptionPane.ERROR_MESSAGE);
-				}
-			}
-				
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			 JOptionPane.showMessageDialog(new JFrame(), "Ocurrio un error al intentar cerrar o abrir el parquimetro : "+e, "Dialog",
-				        JOptionPane.ERROR_MESSAGE);
-		}
-		
-		
-	}
+
 	
 	
 }
