@@ -224,8 +224,13 @@ public class VentanaConsultas extends javax.swing.JInternalFrame
 		   else if(text.toLowerCase().startsWith("insert") || text.toLowerCase().startsWith("update") || text.toLowerCase().startsWith("delete")) {
 			   statement.executeUpdate();
 			   JOptionPane.showMessageDialog(null, "La sentencia fue ejecutada existosamente.", "Ejecucion excitosa", JOptionPane.INFORMATION_MESSAGE);
-	            
-			   
+	           
+		   }
+		   
+		   else if(text.toLowerCase().startsWith("create table")) {
+			   statement.execute();
+			   listarTablas();
+			   JOptionPane.showMessageDialog(null, "La sentencia fue ejecutada existosamente.", "Ejecucion excitosa", JOptionPane.INFORMATION_MESSAGE);
 		   }
     	  
        }
