@@ -84,16 +84,6 @@ public class VentanaInspector extends javax.swing.JInternalFrame
       getContentPane().add(panelInspector);
       panelInspector.setLayout(null);
       
-      btnIngresarCredenciales = new JButton("Conectarse a la BD");
-      btnIngresarCredenciales.addActionListener(new ActionListener() {
-      	public void actionPerformed(ActionEvent arg0) {
-      		ejecutarIngresarCredenciales();
-      			
-      	}
-      });
-      btnIngresarCredenciales.setBounds(30, 37, 135, 23);
-      panelInspector.add(btnIngresarCredenciales);
-      
       lblPatentesSinIngresar = new JLabel("Patentes ingresadas:");
       lblPatentesSinIngresar.setBounds(559, 15, 112, 14);
       panelInspector.add(lblPatentesSinIngresar);
@@ -167,8 +157,9 @@ public class VentanaInspector extends javax.swing.JInternalFrame
       txtIngresarpatentes.setEnabled(false);
       txtIngresarpatentes.addActionListener(new ActionListener() {
     	  	public void actionPerformed(ActionEvent arg0) {
-    	  		if(patenteValida(txtIngresarpatentes.getText()))
-    	  			model.addElement(""+txtIngresarpatentes.getText());
+    	  		
+    	  		if(patenteValida(txtIngresarpatentes.getText().toUpperCase()))
+    	  			model.addElement(""+txtIngresarpatentes.getText().toUpperCase());
     	  		else
     	  			JOptionPane.showMessageDialog(null, "Patente invalida", "Patente invalida", JOptionPane.INFORMATION_MESSAGE);
     	  		txtIngresarpatentes.setText("");
@@ -206,7 +197,7 @@ public class VentanaInspector extends javax.swing.JInternalFrame
       
       
       initGUI();
-      
+      conectarBD();
       
       
 		
@@ -250,29 +241,56 @@ private void initGUI()
       }
    }
    
-   
-   private void ejecutarIngresarCredenciales() {
-		JDialog IngCred = new IngresarInspector(tabla);
-		IngCred.setVisible(true);
-		try {
-			if(tabla.getConnection().isValid(5)) {
-				btnIngresarCredenciales.setVisible(false);
-				btnIngresarLegajo.setVisible(true);
-				//Crea una tabla temporal con los nuevos registros de multas.
-				PreparedStatement tablaTemp = tabla.getConnection().prepareStatement("CREATE TEMPORARY TABLE MULTILLAS(numero_de_multa INT UNSIGNED NOT NULL,"
+	private void conectarBD()
+	{
+	      try
+	      {
+	         String driver ="com.mysql.cj.jdbc.Driver";
+	     	 String servidor = "localhost:3306";
+	     	 String baseDatos = "parquimetros"; 
+	     	 String usuario = "inspector";
+	     	 String clave = "inspector";
+	         String uriConexion = "jdbc:mysql://" + servidor + "/" + 
+	     	                     baseDatos +"?serverTimezone=America/Argentina/Buenos_Aires";
+	
+	    //establece una conexión con la  B.D. "batallas"  usando directamante una tabla DBTable    
+	         tabla.connectDatabase(driver, uriConexion, usuario, clave);
+	        
+	      }
+	      catch (SQLException ex)
+	      {
+	         JOptionPane.showMessageDialog(this,
+	                        "Se produjo un error al intentar conectarse a la base de datos.\n" 
+	                         + ex.getMessage(),
+	                         "Error",
+	                         JOptionPane.ERROR_MESSAGE);
+	         System.out.println("SQLException: " + ex.getMessage());
+	         System.out.println("SQLState: " + ex.getSQLState());
+	         System.out.println("VendorError: " + ex.getErrorCode());
+	      }
+	      catch (ClassNotFoundException e)
+	      {
+	         e.printStackTrace();
+	      }
+	      	btnIngresarLegajo.setVisible(true);
+			//Crea una tabla temporal con los nuevos registros de multas.
+			PreparedStatement tablaTemp;
+			try {
+				tablaTemp = tabla.getConnection().prepareStatement("CREATE TEMPORARY TABLE MULTILLAS(numero_de_multa INT UNSIGNED NOT NULL,"
 						+ " fecha DATE NOT NULL, hora TIME(2) NOT NULL, calle VARCHAR(45) NOT NULL, altura INT UNSIGNED NOT NULL, patente_del_auto VARCHAR(6) NOT NULL,"
 						+ " legajo_del_inspector INT UNSIGNED NOT NULL);", ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_READ_ONLY);
 				tablaTemp.execute();
-				//Se conecta la dbTable a la tabla temporal.
-				tabla.setSelectSql("select * from MULTILLAS");
-				
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 			}
-			else
-				btnIngresarCredenciales.setVisible(true);
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
+			
+			//Se conecta la dbTable a la tabla temporal.
+			tabla.setSelectSql("select * from MULTILLAS");
+	   
 	}
+   
+
    
    private void ejecutarIngresarLegajo() {
 	   IngresarLegajo IngLeg = new IngresarLegajo(tabla);

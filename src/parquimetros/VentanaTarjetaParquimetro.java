@@ -183,9 +183,7 @@ public class VentanaTarjetaParquimetro extends javax.swing.JInternalFrame  {
         });
 	    // crea la tabla  
     	tabla = new DBTable();
-    	tabla.setEditable(false);
-        tabla.setBounds(0, 394, 784, 176);
-        getContentPane().add(tabla);
+    	
         
 	    conectarBD();
 	    
@@ -256,42 +254,7 @@ public class VentanaTarjetaParquimetro extends javax.swing.JInternalFrame  {
 	      }
 	   }
 	
-	private void refrescarTabla()
-	   {
-	      try
-	      {    
-	    	  
-	    	 // seteamos la consulta a partir de la cual se obtendran los datos para llenar la tabla
-	    	  tabla.setSelectSql("call conectar("+id_tarjetaActual+","+id_parqActual+");");
-	    	  
-	    
-	    	  JTable table = tabla.getTable();
-	    	  
-	    	  table.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
-	    	  tabla.setRowCountSql("select '1' as count;");
-	    
-	    	  tabla.refresh();
-	          
-	    	  
-	    	  
-	       }
-	      catch (SQLException ex)
-	      {
-	         // en caso de error, se muestra la causa en la consola
-	         System.out.println("SQLException: " + ex.getMessage());
-	         System.out.println("SQLState: " + ex.getSQLState());
-	         System.out.println("VendorError: " + ex.getErrorCode());
-	         JOptionPane.showMessageDialog(SwingUtilities.getWindowAncestor(this),
-	                                       ex.getMessage() + "\n", 
-	                                       "Error al ejecutar la consulta.",
-	                                       JOptionPane.ERROR_MESSAGE);
-	         
-	      }
-	      
 
-
-	      
-	   }
 
 
 	private void cargarUbicaciones() {
