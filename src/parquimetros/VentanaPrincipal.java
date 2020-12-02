@@ -55,11 +55,6 @@ public class VentanaPrincipal extends javax.swing.JFrame
 
       initGUI();
 
-            
-      this.ventanaConsultas = new VentanaConsultas();
-      this.ventanaConsultas.setVisible(false);
-      this.jDesktopPane1.add(this.ventanaConsultas);
-      
       this.ventanaTarjetaParquimetro = new VentanaTarjetaParquimetro();
       ventanaTarjetaParquimetro.setVisible(false);
       this.jDesktopPane1.add(this.ventanaTarjetaParquimetro);
@@ -158,7 +153,6 @@ public class VentanaPrincipal extends javax.swing.JFrame
       {
     	 this.ventanaInspector = new VentanaInspector();
          ventanaInspector.setLocation(0, 0);
-         this.ventanaInspector.setVisible(false);
          this.jDesktopPane1.add(this.ventanaInspector);
          ventanaInspector.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
          this.ventanaInspector.setMaximum(true);
@@ -171,6 +165,9 @@ public class VentanaPrincipal extends javax.swing.JFrame
    {
       try
       {
+    	 this.ventanaConsultas = new VentanaConsultas();
+         this.jDesktopPane1.add(this.ventanaConsultas);
+         ventanaConsultas.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
          this.ventanaConsultas.setMaximum(true);
       }
       catch (PropertyVetoException e) {}
@@ -180,8 +177,11 @@ public class VentanaPrincipal extends javax.swing.JFrame
    private void mniTarjetaParquimetroActionPerformed(ActionEvent evt)
    {
 	   	try
-	   	{
-	   			this.ventanaTarjetaParquimetro.setMaximum(true);
+	   	{		
+	   	   this.ventanaTarjetaParquimetro = new VentanaTarjetaParquimetro();
+	       this.jDesktopPane1.add(this.ventanaTarjetaParquimetro);
+	       ventanaTarjetaParquimetro.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+	   	   this.ventanaTarjetaParquimetro.setMaximum(true);
 	   	}
 	   	catch(PropertyVetoException e) {}
 	   	this.ventanaTarjetaParquimetro.setVisible(true);
