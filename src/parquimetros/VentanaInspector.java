@@ -302,7 +302,6 @@ private void initGUI()
    public void legValido(IngresarLegajo IngLeg) {
 	   legajo = IngLeg.getLegajo();
 	   menuBar.setEnabled(true);
-	   txtIngresarpatentes.setEnabled(true);
 	   btnIngresarLegajo.setVisible(false);
 	   cargarUbicaciones();
    }
@@ -345,6 +344,8 @@ private void initGUI()
 	   //Remueve las patentes cargadas al cambiar de ubicacion
 	   model.clear();
 	   
+	   txtIngresarpatentes.setEnabled(true);
+	   txtIngresarpatentes.setText("Ingresar Patente");
 	   par=parquimetro;
 	   calleActual=callie;
 	   alturaActual=alturia;
