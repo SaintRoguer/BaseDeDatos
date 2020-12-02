@@ -110,8 +110,7 @@ public class IngresarLegajo extends javax.swing.JDialog {
         	digest = md.digest();
         	myHash = DatatypeConverter.printHexBinary(digest).toUpperCase();
         	
-	        	System.out.println(myHash);
-	        	System.out.println();
+	    
 			
 			PreparedStatement consulta = tabla.getConnection().prepareStatement("SELECT legajo, password FROM Inspectores;", ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_READ_ONLY);
 			consulta.execute();	
@@ -122,7 +121,7 @@ public class IngresarLegajo extends javax.swing.JDialog {
 				userDB = resultados.getString("legajo");
             	hash = resultados.getString("password").toUpperCase();
             	
-            		System.out.println(hash);
+            
             	
             	success = myHash.equals(hash);
 			}
