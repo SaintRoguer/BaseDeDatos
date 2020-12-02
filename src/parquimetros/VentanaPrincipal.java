@@ -7,7 +7,7 @@ import java.beans.PropertyVetoException;
 
 
 import javax.swing.JDesktopPane;
-
+import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
@@ -55,11 +55,7 @@ public class VentanaPrincipal extends javax.swing.JFrame
 
       initGUI();
 
-      this.ventanaInspector = new VentanaInspector();
-      ventanaInspector.setLocation(0, 0);
-      this.ventanaInspector.setVisible(false);
-      this.jDesktopPane1.add(this.ventanaInspector);
-      
+            
       this.ventanaConsultas = new VentanaConsultas();
       this.ventanaConsultas.setVisible(false);
       this.jDesktopPane1.add(this.ventanaConsultas);
@@ -113,7 +109,7 @@ public class VentanaPrincipal extends javax.swing.JFrame
                   mniInspector.setText("Dispositivo del inspector");
                   mniInspector.addActionListener(new ActionListener() {
                      public void actionPerformed(ActionEvent evt) {
-                        mniBarcosActionPerformed(evt);
+                        mniInspectorActionPerformed(evt);
                      }
                   });
                }
@@ -156,10 +152,15 @@ public class VentanaPrincipal extends javax.swing.JFrame
       this.dispose();
    }
    
-   private void mniBarcosActionPerformed(ActionEvent evt) 
+   private void mniInspectorActionPerformed(ActionEvent evt) 
    {
       try
       {
+    	 this.ventanaInspector = new VentanaInspector();
+         ventanaInspector.setLocation(0, 0);
+         this.ventanaInspector.setVisible(false);
+         this.jDesktopPane1.add(this.ventanaInspector);
+         ventanaInspector.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
          this.ventanaInspector.setMaximum(true);
       }
       catch (PropertyVetoException e) {}

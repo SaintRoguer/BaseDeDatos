@@ -293,19 +293,18 @@ private void initGUI()
 
    
    private void ejecutarIngresarLegajo() {
-	   IngresarLegajo IngLeg = new IngresarLegajo(tabla);
+	   IngresarLegajo IngLeg = new IngresarLegajo(tabla,this);
 	   IngLeg.setVisible(true);
-	   if(tabla.isValid()){
-		   legajo = IngLeg.getLegajo();
-		   menuBar.setEnabled(true);
-		   txtIngresarpatentes.setEnabled(true);
-		   btnIngresarLegajo.setVisible(false);
-		   cargarUbicaciones();
-	   }
-	   	else
-	   		btnIngresarLegajo.setVisible(true);
 	   IngLeg.dispose();
 	   
+   }
+   
+   public void legValido(IngresarLegajo IngLeg) {
+	   legajo = IngLeg.getLegajo();
+	   menuBar.setEnabled(true);
+	   txtIngresarpatentes.setEnabled(true);
+	   btnIngresarLegajo.setVisible(false);
+	   cargarUbicaciones();
    }
    
    private void cargarUbicaciones() {

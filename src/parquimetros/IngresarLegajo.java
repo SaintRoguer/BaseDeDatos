@@ -29,11 +29,13 @@ public class IngresarLegajo extends javax.swing.JDialog {
 	private JTextField textUsuario;
 	private JPasswordField passwordField;
 	private DBTable tabla;
+	private VentanaInspector inspector;
 	
-	public IngresarLegajo(DBTable tabla) {
+	public IngresarLegajo(DBTable tabla, VentanaInspector insp) {
 		setModal(true);
 		initialize();
 		this.tabla = tabla;
+		this.inspector = insp;
 	}
 			
 	
@@ -130,6 +132,7 @@ public class IngresarLegajo extends javax.swing.JDialog {
 			}
 			else {
 				JOptionPane.showMessageDialog(null, "La acreditacion fue exitosa.", "Acreditacion exitosa", JOptionPane.INFORMATION_MESSAGE);
+				inspector.legValido(this);
 				this.setVisible(false); 
 			}
 		
