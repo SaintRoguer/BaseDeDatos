@@ -109,21 +109,19 @@ public class IngresarLegajo extends javax.swing.JDialog {
         	md.update(pwIngresado.getBytes());
         	digest = md.digest();
         	myHash = DatatypeConverter.printHexBinary(digest).toUpperCase();
-        	
+
+			JOptionPane.showMessageDialog(null, "La acreditacion fallo, el Nro de legajo o la contrasenia es incorrecta.", "Acreditacion fallida", JOptionPane.INFORMATION_MESSAGE);
 	    
 			
 			PreparedStatement consulta = tabla.getConnection().prepareStatement("SELECT legajo, password FROM Inspectores;", ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_READ_ONLY);
 			consulta.execute();	
 			ResultSet resultados = consulta.getResultSet();
-			
+
 			
 			while(resultados.next() && !success) {
 				userDB = resultados.getString("legajo");
             	hash = resultados.getString("password").toUpperCase();
-            	
-            
-            	
-            	success = myHash.equals(hash);
+            	success = (myHash.equals(hash)) && (userDB.equals(userIngresado));
 			}
 			
 			if(!success) {
