@@ -14,6 +14,8 @@ import quick.dbtable.DBTable;
 import javax.swing.JPasswordField;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
+import java.math.BigInteger;
+import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.awt.event.ActionEvent;
@@ -22,6 +24,7 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Base64;
 
 public class IngresarLegajo extends javax.swing.JDialog {
 	
@@ -108,8 +111,10 @@ public class IngresarLegajo extends javax.swing.JDialog {
         	md = MessageDigest.getInstance("MD5");
         	md.update(pwIngresado.getBytes());
         	digest = md.digest();
-        	myHash = DatatypeConverter.printHexBinary(digest).toUpperCase();
-	    
+        	//myHash = DatatypeConverter.printHexBinary(digest).toUpperCase();
+        	//myHash = Base64.getEncoder().encodeToString(digest).toUpperCase();
+        	BigInteger bigInt = new BigInteger(1,digest);
+        	myHash = bigInt.toString(16).toUpperCase();
 			
 			PreparedStatement consulta = tabla.getConnection().prepareStatement("SELECT legajo, password FROM Inspectores;", ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_READ_ONLY);
 			consulta.execute();	
@@ -131,6 +136,7 @@ public class IngresarLegajo extends javax.swing.JDialog {
 				this.setVisible(false); 
 			}
 		
+			System.out.println();
 	
 		
 		} 
