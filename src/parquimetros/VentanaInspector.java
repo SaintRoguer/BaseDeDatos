@@ -577,10 +577,10 @@ private void initGUI()
 		   
 		   //Dia actual en numero, 1 Domingo 7 sabado. 
 		   Date dateI = new Date();
-		   int diaI = getDayNumberOld(dateI);
+		  
 		   
 		   //El dia actual es el dia en el que trabaja el inspector.
-		   boolean turnoD = (diaI == 1 && dia.equals("do")) || (diaI == 2 && dia.equals("lu")) || (diaI == 3 && dia.equals("ma")) || (diaI == 4 && dia.equals("mi")) || (diaI == 5 && dia.equals("ju")) || (diaI == 6 && dia.equals("vi")) || (diaI == 7 && dia.equals("sa"));
+		   boolean turnoD = (dia.equals("")) ? false : true; 
 		   //La hora actual es entre las 8 y las 13:59 o entre las 14 y las 20.
 		   boolean turno = turnoD && (((turn.equals("m") || turn.equals("mt")) && formatedHor.compareTo("08:00")>0 && formatedHor.compareTo("13:59")<0) || ((turn.equals("t") || turn.equals("mt")) && formatedHor.compareTo("14:00")>0 && formatedHor.compareTo("20:00")<0));
 		   
