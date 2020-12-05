@@ -38,6 +38,11 @@ import javax.swing.JTable;
 import javax.swing.JTextField; 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.Locale;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;;
 
 @SuppressWarnings("serial")
 public class VentanaInspector extends javax.swing.JInternalFrame 
@@ -93,10 +98,11 @@ public class VentanaInspector extends javax.swing.JInternalFrame
       panelInspector.add(scrollPane_1);
       
       model= new DefaultListModel();
+      
       list = new JList(model);
       list.addMouseListener(new MouseListener() {
     	  public void mousePressed(MouseEvent e) {
-    		  	model.removeElement(((String) list_1.getSelectedValue()));
+    		  	model.removeElement(((String) list.getSelectedValue()));
     		  	if(model.isEmpty())
     		  		btnLabrarMultas.setEnabled(false);
     		  	
@@ -158,10 +164,8 @@ public class VentanaInspector extends javax.swing.JInternalFrame
       txtIngresarpatentes.addActionListener(new ActionListener() {
     	  	public void actionPerformed(ActionEvent arg0) {
     	  		
-    	  		if(patenteValida(txtIngresarpatentes.getText().toUpperCase()))
+    	  		if(patenteValida(txtIngresarpatentes.getText().toUpperCase())&& patenteNoEnLista(txtIngresarpatentes.getText().toUpperCase()))
     	  			model.addElement(""+txtIngresarpatentes.getText().toUpperCase());
-    	  		else
-    	  			JOptionPane.showMessageDialog(null, "Patente invalida", "Patente invalida", JOptionPane.INFORMATION_MESSAGE);
     	  		txtIngresarpatentes.setText("");
     	  		if(!model.isEmpty()&& (calleActual != null))
     	  			btnLabrarMultas.setEnabled(true);
@@ -202,7 +206,19 @@ public class VentanaInspector extends javax.swing.JInternalFrame
       
 		
    }
- 
+   //Verifica que la patente ingresada no este en la lista
+   private boolean patenteNoEnLista(String patente) {
+	   boolean esta= model.contains(patente);
+	   
+	   if(esta)
+		   JOptionPane.showMessageDialog(new JFrame(), "La patente "+patente+" ya se encuentra ingresada.","Patente",
+			        JOptionPane.ERROR_MESSAGE);
+	   
+	   return !esta;
+   }
+   
+   
+   //Verifica que la patente ingresada se encuentra en la base de datos.
    protected boolean patenteValida(String patente) {
 	   boolean valida = false;
 	   if(patente.length() == 6) {
@@ -214,6 +230,10 @@ public class VentanaInspector extends javax.swing.JInternalFrame
 				   valida = result.getString("patente").equals(patente);
 		   } catch (SQLException e) {e.printStackTrace();}
 	   }
+	   
+	   if(!valida)
+		   JOptionPane.showMessageDialog(new JFrame(), "La patente "+patente+" no es valida.","Patente",
+			        JOptionPane.ERROR_MESSAGE);
 	   return valida;
    }
 
@@ -349,6 +369,7 @@ private void initGUI()
 	   par=parquimetro;
 	   calleActual=callie;
 	   alturaActual=alturia;
+	   mnSeleccionarUbicacion.setText("             "+callie+" "+alturia+"             ");
 	   PreparedStatement consUbic;
 	   PreparedStatement consAccede;
 	   
@@ -425,7 +446,10 @@ private void initGUI()
     		    tabla.getColumn(i).setDateFormat("dd/MM/YYYY");
     		 }
           }  
-    	  // actualizamos el contenido de la tabla.   	     	  
+    	  // actualizamos el contenido de la tabla.   	
+    	  JTable table = tabla.getTable();
+	      table.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
+	       
     	  tabla.refresh();
     	  // No es necesario establecer  una conexión, crear una sentencia y recuperar el 
     	  // resultado en un resultSet, esto lo hace automáticamente la tabla (DBTable) a 
@@ -452,6 +476,45 @@ private void initGUI()
       
    }
    
+   //Metodo que retorna el dia si el dia es igual al dia recibido, sino retorna "".
+   private String diaActual(String dia) {
+	   String actual = "";
+	   int diaNum = getDayNumberOld(new Date());
+	   switch (diaNum)
+	   {
+	   	case 1:
+	   		actual = "do";
+	   	case 2:
+	   		actual = "lu";
+	   	case 3:
+	   		actual = "ma";
+	   	case 4:
+	   		actual = "mi";
+	   	case 5:
+	   		actual = "ju";
+	   	case 6:
+	   		actual = "vi";
+	   	case 7:
+	   		actual = "sa";
+				 
+	   }
+	   if(!actual.equals(dia))
+		   actual = "";
+		   
+	   
+	   return actual;
+   }
+   
+   private static int getDayNumberOld(Date date) {
+	    Calendar cal = Calendar.getInstance();
+	    cal.setTime(date);
+	    return cal.get(Calendar.DAY_OF_WEEK);
+	}
+   
+   public static String getDayStringOld(Date date, Locale locale) {
+	    DateFormat formatter = new SimpleDateFormat("EEEE", locale);
+	    return formatter.format(date);
+	}
    
    private void ejecutarLabrarMultas() {
 	   PreparedStatement multas;
@@ -463,6 +526,8 @@ private void initGUI()
 	   boolean esta = false;
 	   String turn="";
 	   int id_as = -1;
+	   String dia="";
+	   
 	   try {
 		   check = tabla.getConnection().prepareStatement("SELECT * FROM asociado_con;", ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_READ_ONLY);
 		   check.execute();
@@ -473,127 +538,153 @@ private void initGUI()
 				String calleM = rescheck.getString("calle");
 				int alturaM = rescheck.getInt("altura");
 				String turnoM = rescheck.getString("turno");
+				String diaM = rescheck.getString("dia");
 				int id_asM = rescheck.getInt("id_asociado_con");
 				if(legaM == Integer.parseInt(legajo) && calleM.contentEquals(calleActual) && alturaM==alturaActual) {
 					esta=true;
-					turn = turnoM;
+					
 					id_as = id_asM;
+					//Verifico si alguna tupla tiene el dia actual como dia en el que se le asigno el turno.
+					String actual = diaActual(diaM);
+					if(!actual.equals("")) {
+						dia = diaM;
+						//Tiene un solo turno o es la primera tupla.
+						if(turn.equals(""))
+							turn = turnoM;
+						else //Tiene 2 turnos, mañana y tarde.
+							turn = "mt";
+					}
 				}
 			}
-		
-		
+		   
 	   } catch (SQLException e1) {
 		   // TODO Auto-generated catch block
 		   e1.printStackTrace();
 	   }
 	   
-	 //Hora actual
-	   LocalDateTime hor = LocalDateTime.now();
-	   DateTimeFormatter horForm = DateTimeFormatter.ofPattern("HH:mm");
-	   String formatedHor = hor.format(horForm);
-	   //La hora actual es entre las 8 y las 13:59 o entre las 14 y las 20.
-	   boolean turno = (turn.equals("m") && formatedHor.compareTo("08:00")>0 && formatedHor.compareTo("13:59")<0) | (turn.equals("t") && formatedHor.compareTo("14:00")>0 && formatedHor.compareTo("20:00")<0);
 	   
-	   //El inspector no esta asociado con la ubicacion o esta fuera de su turno.
-	   if(!esta|!turno) {
-		   JOptionPane.showMessageDialog(new JFrame(), "El inspector no esta autorizado para labrar multas en esta ubicacion", "Dialog",
+	   //El inspector no esta asociado con la ubicacion.
+	   if(!esta) {
+		   JOptionPane.showMessageDialog(new JFrame(), "El inspector no esta autorizado para labrar multas en esta ubicacion", "Ubicacion",
 			        JOptionPane.ERROR_MESSAGE);
 		   
 	   }
-	   else {
-		   	int cantLista = model.getSize();
-	     
-		   	for(int i=0;i<cantLista;i++) {
-		   		//Decodifico el elemento i de la lista.
-		   		String patenteI = (String) model.get(i);
-		   		//Fecha actual.
-		   		LocalDateTime date = LocalDateTime.now();
-		   		DateTimeFormatter dateForm = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-		   		String formatedDate = date.format(dateForm);
+	   else { 
+		   //Hora actual
+		   LocalDateTime hor = LocalDateTime.now();
+		   DateTimeFormatter horForm = DateTimeFormatter.ofPattern("HH:mm");
+		   String formatedHor = hor.format(horForm);
 		   
+		   //Dia actual en numero, 1 Domingo 7 sabado. 
+		   Date dateI = new Date();
+		   int diaI = getDayNumberOld(dateI);
 		   
-		   		//Hora actual
-		   		LocalDateTime hour = LocalDateTime.now();
-		   		DateTimeFormatter hourForm = DateTimeFormatter.ofPattern("HH:mm:ss.SS");
-		   		String formatedHour = hour.format(hourForm);
-		   		
-		   		//chequeo si la patenteI esta estacionada.
-		   		boolean estacionado = false;
-		   		boolean multar = false;
-		   		String pateneteEst, alturaEstS, calleEst;
-		   		int alturaEst;
-		   		try {
-		   			PreparedStatement consulta = tabla.getConnection().prepareStatement("SELECT * FROM estacionados;", ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_READ_ONLY);
-		   			consulta.execute();
-				   	ResultSet results = consulta.getResultSet();
-				   	while(results.next()) {
-				   		pateneteEst = results.getString("patente");
-				   		alturaEstS = results.getString("altura");
-				   		alturaEst = Integer.parseInt(alturaEstS);
-				   		calleEst = results.getString("calle");
-						if(pateneteEst.equals(patenteI) && alturaEst == alturaActual && calleEst.equals(calleActual))
-							estacionado=true;
-						else if(pateneteEst.equals(patenteI) && alturaEst != alturaActual && !(calleEst.equals(calleActual)))
-							multar=true;
-				   	}
-				   	
-				} catch (SQLException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
-		   		//si no esta estacionado labro la multa, insertando una multa a la base de datos.
-		   		if(!estacionado || multar) {
-		   		
-		   		try {
-		   			consUbic = tabla.getConnection().prepareStatement("INSERT INTO multa(fecha,hora,patente,id_asociado_con)"+
-		   																"VALUES ('"+ formatedDate +"','" + formatedHour + "','" +
-		   																patenteI +"','" + id_as + "')"
-		   																, ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_READ_ONLY);
-		   			consUbic.execute();	
-		   			
-		   			//Recupero el numero de multa luego de la insercion de dicha multa.
-		   			multas = tabla.getConnection().prepareStatement("SELECT * FROM multa;", ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_READ_ONLY);
-		   			multas.execute();
-				   	ResultSet resmul = multas.getResultSet();
-				   	while(resmul.next()) {
-				   		int numMul = resmul.getInt("numero");
-				   		String feMul = resmul.getString("fecha");
-				   		String hoMul = resmul.getString("hora");
-				   		String pat = resmul.getString("patente");
-				   		int idMul = resmul.getInt("id_asociado_con");
-				   		if((feMul.equals(formatedDate)) && (hoMul.equals(formatedHour)) && (pat.equals(patenteI)) && (idMul == id_as)){
-				   			nMulta = numMul;
+		   //El dia actual es el dia en el que trabaja el inspector.
+		   boolean turnoD = (diaI == 1 && dia.equals("do")) || (diaI == 2 && dia.equals("lu")) || (diaI == 3 && dia.equals("ma")) || (diaI == 4 && dia.equals("mi")) || (diaI == 5 && dia.equals("ju")) || (diaI == 6 && dia.equals("vi")) || (diaI == 7 && dia.equals("sa"));
+		   //La hora actual es entre las 8 y las 13:59 o entre las 14 y las 20.
+		   boolean turno = turnoD && (((turn.equals("m") || turn.equals("mt")) && formatedHor.compareTo("08:00")>0 && formatedHor.compareTo("13:59")<0) || ((turn.equals("t") || turn.equals("mt")) && formatedHor.compareTo("14:00")>0 && formatedHor.compareTo("20:00")<0));
+		   
+		    //El inspector esta fuera de turno.
+		   if(!turno) {
+			   JOptionPane.showMessageDialog(new JFrame(), "El inspector esta fuera de turno, el horario actual es : "+formatedHor+" y el dia es : "+getDayStringOld(dateI, new Locale("es")), "Turno",
+				        JOptionPane.ERROR_MESSAGE);
+	   		}
+	   		else {
+				   	int cantLista = model.getSize();
+			     
+				   	for(int i=0;i<cantLista;i++) {
+				   		//Decodifico el elemento i de la lista.
+				   		String patenteI = (String) model.get(i);
+				   		//Fecha actual.
+				   		LocalDateTime date = LocalDateTime.now();
+				   		DateTimeFormatter dateForm = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+				   		String formatedDate = date.format(dateForm);
+				   
+				   
+				   		//Hora actual
+				   		LocalDateTime hour = LocalDateTime.now();
+				   		DateTimeFormatter hourForm = DateTimeFormatter.ofPattern("HH:mm:ss.SS");
+				   		String formatedHour = hour.format(hourForm);
+				   		
+				   		//chequeo si la patenteI esta estacionada.
+				   		boolean estacionado = false;
+				   		boolean multar = false;
+				   		String pateneteEst, alturaEstS, calleEst;
+				   		int alturaEst;
+				   		try {
+				   			PreparedStatement consulta = tabla.getConnection().prepareStatement("SELECT * FROM estacionados;", ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_READ_ONLY);
+				   			consulta.execute();
+						   	ResultSet results = consulta.getResultSet();
+						   	while(results.next()) {
+						   		pateneteEst = results.getString("patente");
+						   		alturaEstS = results.getString("altura");
+						   		alturaEst = Integer.parseInt(alturaEstS);
+						   		calleEst = results.getString("calle");
+								if(pateneteEst.equals(patenteI) && alturaEst == alturaActual && calleEst.equals(calleActual))
+									estacionado=true;
+								else if(pateneteEst.equals(patenteI) && alturaEst != alturaActual && !(calleEst.equals(calleActual)))
+									multar=true;
+						   	}
+						   	
+						} catch (SQLException e1) {
+							// TODO Auto-generated catch block
+							e1.printStackTrace();
+						}
+				   		//si no esta estacionado labro la multa, insertando una multa a la base de datos.
+				   		if(!estacionado || multar) {
+				   		
+				   		try {
+				   			consUbic = tabla.getConnection().prepareStatement("INSERT INTO multa(fecha,hora,patente,id_asociado_con)"+
+				   																"VALUES ('"+ formatedDate +"','" + formatedHour + "','" +
+				   																patenteI +"','" + id_as + "')"
+				   																, ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_READ_ONLY);
+				   			consUbic.execute();	
+				   			
+				   			//Recupero el numero de multa luego de la insercion de dicha multa.
+				   			multas = tabla.getConnection().prepareStatement("SELECT * FROM multa;", ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_READ_ONLY);
+				   			multas.execute();
+						   	ResultSet resmul = multas.getResultSet();
+						   	while(resmul.next()) {
+						   		int numMul = resmul.getInt("numero");
+						   		String feMul = resmul.getString("fecha");
+						   		String hoMul = resmul.getString("hora");
+						   		String pat = resmul.getString("patente");
+						   		int idMul = resmul.getInt("id_asociado_con");
+						   		if((feMul.equals(formatedDate)) && (hoMul.equals(formatedHour)) && (pat.equals(patenteI)) && (idMul == id_as)){
+						   			nMulta = numMul;
+						   		}
+						   				
+								
+						   	}
+				   			
+				   			
+				   			
+				   			
+				   			//Inserto en la tabla temporal de multas las multa que labro
+				   			insert = tabla.getConnection().prepareStatement("INSERT INTO MULTILLAS(numero_de_multa,fecha,hora,calle,altura,patente_del_auto,legajo_del_inspector) "+
+										"VALUES ('"+ nMulta + "','" +
+										formatedDate +"','" + formatedHour + "','" +
+										calleActual + "','" + alturaActual + "','" +
+										patenteI +"','" + legajo + "')"
+										, ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_READ_ONLY);
+				   			insert.execute();	
+				   			
+				   			
+				   		} catch (SQLException e) {
+				   			// TODO Auto-generated catch block
+				   			e.printStackTrace();
 				   		}
-				   				
-						
+				   		}
+				  
+				   
+				   
+				   
 				   	}
-		   			
-		   			
-		   			
-		   			
-		   			//Inserto en la tabla temporal de multas las multa que labro
-		   			insert = tabla.getConnection().prepareStatement("INSERT INTO MULTILLAS(numero_de_multa,fecha,hora,calle,altura,patente_del_auto,legajo_del_inspector) "+
-								"VALUES ('"+ nMulta + "','" +
-								formatedDate +"','" + formatedHour + "','" +
-								calleActual + "','" + alturaActual + "','" +
-								patenteI +"','" + legajo + "')"
-								, ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_READ_ONLY);
-		   			insert.execute();	
-		   			
-		   			
-		   		} catch (SQLException e) {
-		   			// TODO Auto-generated catch block
-		   			e.printStackTrace();
-		   		}
-		   		}
-		  
-		   
-		   
-		   
-		   	}
+			   }
 	   }
 	   
 	 refrescarTabla();
 	 btnLabrarMultas.setEnabled(false);
+	 model.clear();
    }
 }
