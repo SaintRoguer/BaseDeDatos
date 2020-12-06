@@ -369,7 +369,7 @@ private void initGUI()
 	   par=parquimetro;
 	   calleActual=callie;
 	   alturaActual=alturia;
-	   mnSeleccionarUbicacion.setText("             "+callie+" "+alturia+"             ");
+	   mnSeleccionarUbicacion.setText("           "+callie+" al "+alturia+"             ");
 	   PreparedStatement consUbic;
 	   PreparedStatement consAccede;
 	   
