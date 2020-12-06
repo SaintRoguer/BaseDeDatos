@@ -484,24 +484,29 @@ private void initGUI()
 	   {
 	   	case 1:
 	   		actual = "do";
+	   		break;
 	   	case 2:
 	   		actual = "lu";
+	   		break;
 	   	case 3:
 	   		actual = "ma";
+	   		break;
 	   	case 4:
 	   		actual = "mi";
+	   		break;
 	   	case 5:
 	   		actual = "ju";
+	   		break;
 	   	case 6:
 	   		actual = "vi";
+	   		break;
 	   	case 7:
 	   		actual = "sa";
-				 
+	   		break;
 	   }
 	   if(!actual.equals(dia))
 		   actual = "";
 		   
-	   
 	   return actual;
    }
    
@@ -561,7 +566,7 @@ private void initGUI()
 		   // TODO Auto-generated catch block
 		   e1.printStackTrace();
 	   }
-	   
+	   System.out.println("dia : "+dia);
 	   
 	   //El inspector no esta asociado con la ubicacion.
 	   if(!esta) {
